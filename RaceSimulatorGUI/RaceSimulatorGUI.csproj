@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Blue_Car.png" />
+    <None Remove="Assets\Broken_Blue_Car.png" />
+    <None Remove="Assets\Broken_Green_Car.png" />
+    <None Remove="Assets\Broken_Orange_Car.png" />
+    <None Remove="Assets\Broken_Red_Car.png" />
+    <None Remove="Assets\Broken_Yellow_Car.png" />
+    <None Remove="Assets\Corner.png" />
+    <None Remove="Assets\Finish.png" />
+    <None Remove="Assets\Green_Car.png" />
+    <None Remove="Assets\Orange_Car.png" />
+    <None Remove="Assets\Red_Car.png" />
+    <None Remove="Assets\Start.png" />
+    <None Remove="Assets\Straight.png" />
+    <None Remove="Assets\Yellow_Car.png" />
+    <None Remove="Racetrack_Car_Blue.png" />
+    <None Remove="Assets\andera.png" />
+    <None Remove="Assets\Racetrack_Corner_NE.png" />
+    <None Remove="Assets\Racetrack_Corner_NW.png" />
+    <None Remove="Assets\Racetrack_Corner_SE.png" />
+    <None Remove="Assets\Racetrack_Corner_SW.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Blue_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Broken_Blue_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Corner.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Green_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Broken_Green_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Orange_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Broken_Orange_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Red_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Broken_Red_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Straight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Yellow_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Broken_Yellow_Car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Finish.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Start.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Controller\Controller.csproj" />
+    <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+</Project>

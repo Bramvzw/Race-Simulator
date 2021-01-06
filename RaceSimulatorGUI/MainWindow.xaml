@@ -1,0 +1,25 @@
+﻿<Window x:Class="RaceSimulatorGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RaceSimulatorGUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="750" Width="1500">
+    <Window.DataContext>
+        <local:RaceStatsWindowDataContext/>
+    </Window.DataContext>
+    <Grid Background="#FF2E2E2E">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"  Background="#FF464646">
+                <MenuItem Header="Statistieken inzien" FontSize="20" Foreground="White" >
+                    <MenuItem x:Name="MenuItemShowRaceStats" Header="Race statistieken" Background="DarkGray" Click="MenuItem_ShowRaceStats_Click"/>
+                    <MenuItem x:Name="MenuItemShowCompetitionStats" Header="Competitie statistieken" HorizontalAlignment="Center"  Background="DarkGray" Click="MenuItem_ShowCompetitionStats_Click"/>
+                    <MenuItem x:Name="MenuItemExit" Header="Afsluiten" Background="DarkGray" Click="MenuItem_Exit_Click"/>
+                </MenuItem>
+            </Menu>
+            <Label x:Name="LblTrackName"  FontSize="20" Foreground="White" Content="{Binding TrackName, Mode=OneWay}" Width="175" DockPanel.Dock="Left"/>
+            <Image x:Name="TrackImage" Margin="0,0,0,0"/>
+        </DockPanel>
+    </Grid>
+</Window>
