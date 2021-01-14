@@ -96,7 +96,7 @@ namespace Model
         {
             ContestorSectionTime.AddToList(new ParticipantSectionTime()
             {
-                
+
                 Name = contestor.Name,
                 Section = section,
                 Time = time,

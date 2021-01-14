@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
 
-namespace RaceSimulatorGUI {
-    public class DisplayTime : IParticipantDisplay {
+namespace RaceSimulatorGUI
+{
+    public class DisplayTime : IParticipantDisplay
+    {
 
         public IParticipant Contestor { get; set; }
         public int Position { get; set; }
@@ -15,11 +17,13 @@ namespace RaceSimulatorGUI {
         public TimeSpan TimeSpan { get; set; }
         public bool Finished { get; set; }
 
-        public DisplayTime(IParticipant contestor, int position, bool finished) {
+        public DisplayTime(IParticipant contestor, int position, bool finished)
+        {
             Contestor = contestor;
             Position = position;
             Name = contestor.Name;
-            switch (contestor.TeamColour) {
+            switch (contestor.TeamColour)
+            {
                 case TeamColours.Orange:
                     Brush = new SolidColorBrush(Color.FromRgb(245, 63, 39));
                     break;
@@ -32,7 +36,7 @@ namespace RaceSimulatorGUI {
                 case TeamColours.Yellow:
                     Brush = new SolidColorBrush(Color.FromRgb(255, 255, 15));
                     break;
-              
+
                 case TeamColours.Blue:
                     Brush = new SolidColorBrush(Color.FromRgb(15, 255, 255));
                     break;

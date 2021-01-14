@@ -12,15 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace RaceSimulatorGUI {
-    public partial class CompetitionStats : Window {
+namespace RaceSimulatorGUI
+{
+    public partial class CompetitionStats : Window
+    {
 
         private CompetitionDisplay _competitionStats = new CompetitionDisplay();
-        public CompetitionStats() {
+        public CompetitionStats()
+        {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
             _competitionStats.UpdateList();
         }
     }

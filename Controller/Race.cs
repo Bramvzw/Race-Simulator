@@ -118,25 +118,42 @@ namespace Controller
             }
         }
 
-        // Checks when equipmet has broken down and add it to the counter also gives the equipment some damage which can not be lower than 0
+        // Checks when equipment has broken down and add it to the counter also gives the equipment some damage which can not be lower than 0
+        //private void CheckEquipment()
+        //{
+        //    int number = 10;
+        //    foreach (IParticipant contestors in Contestors)
+        //    {
+        //        if (contestors.Equipment.IsBroken) continue;
+
+        //        if (Random.Next(0, 1000) < number)
+        //        {
+        //            contestors.Equipment.IsBroken = true;
+        //            Data.Competition.ContestorBrokenCount(contestors, 1);
+
+        //            contestors.Equipment.Quality -= 5;
+
+        //            if (contestors.Equipment.Quality <= 0)
+        //            {
+        //                contestors.Equipment.Quality = 0;
+        //            }
+        //        }
+        //    }
+        //}
+
         private void CheckEquipment()
         {
             int number = 10;
-            foreach (IParticipant contestors in Contestors)
+            foreach (IParticipant contestor in Contestors)
             {
-                if (contestors.Equipment.IsBroken) continue;
-
+                if (contestor.Equipment.IsBroken) continue;
                 if (Random.Next(0, 1000) < number)
                 {
-                    contestors.Equipment.IsBroken = true;
-                    Data.Competition.ContestorBrokenCount(contestors, 1);
-
-                    contestors.Equipment.Quality -= 5;
-
-                    if (contestors.Equipment.Quality <= 0)
-                    {
-                        contestors.Equipment.Quality = 0;
-                    }
+                    contestor.Equipment.IsBroken = true;
+                    Data.Competition.ContestorBrokenCount(contestor, 1);
+                    contestor.Equipment.Quality -= 5;
+                    if (contestor.Equipment.Quality < 0)
+                        contestor.Equipment.Quality = 0;
                 }
             }
         }
@@ -189,20 +206,36 @@ namespace Controller
             _finalRanking = finalRanking;
         }
 
+        public bool CheckCorner(Section section)
+        {
+            bool corner = false;
+            if (section.SectionType == SectionTypes.RightCorner)
+                corner = true;
+            if (section.SectionType == SectionTypes.LeftCorner)
+                corner = true;
+            return corner;
+        }
 
-        public bool MoveParticipants(IParticipant contestor, SectionData data, float speed, bool isLeft, bool isInInnerCorner, Section section, DateTime time)
+
+        public bool MoveParticipants(IParticipant contestor, SectionData data, float speed, bool left, bool isInInnerCorner, Section section, DateTime time)
         {
             // Checks if the sectiontype is a corner
-            bool isCorner = section.SectionType == SectionTypes.LeftCorner || section.SectionType == SectionTypes.RightCorner;
+            bool corner = CheckCorner(section);
             // Calculates the distance
-            int distance = isLeft ? data.DistanceLeft : data.DistanceRight;
-            distance += (int)Math.Ceiling(speed);
-            if (isLeft)
+            int distance;
+            if (left)
+                distance = data.DistanceLeft;
+            else
+                distance = data.DistanceRight;
+            distance += (int) Math.Ceiling(speed);
+            if (left)
                 data.DistanceLeft = distance;
             else
                 data.DistanceRight = distance;
-            int outerCornerLength = isCorner && !isInInnerCorner ? 80 : 0;
-            // wanneer de distance is higher than the length of the section minus the corner 
+
+            data.DistanceRight = distance;
+            int outerCornerLength = corner && !isInInnerCorner ? 80 : 0;
+            // when te distance is higher than the length of the section minus the corner 
             if (distance >= (SECTION_LENGTH - outerCornerLength) || (isInInnerCorner && distance >= INNER_CORNER_LENGTH))
             {
                 if (section.SectionType == SectionTypes.Finish && !_finished[contestor])
@@ -215,7 +248,7 @@ namespace Controller
                     if (_ContHascompletedLaps[contestor] > 2)
                     {
                         _finalRanking.Add(_finalRanking.Count + 1, contestor);
-                        if (isLeft)
+                        if (left)
                             data.Left = null;
                         else
                             data.Right = null;
@@ -239,7 +272,7 @@ namespace Controller
                     AddTimeToParticipant(contestor, time);
                     return false;
                 }
-                if (isLeft)
+                if (left)
                 {
                     data.Left = null;
                 }
@@ -271,7 +304,7 @@ namespace Controller
                 if (data == null)
                     continue;
                 // calculates the speed of a contestor by equipment_speed * equipment_performace * equipment_quality
-                float speed = (_ranking[i].Equipment.Speed * _ranking[i].Equipment.Performance  ) * (_ranking[i].Equipment.Quality * (float)Math.Sqrt(_ranking[i].Equipment.Quality) / 1000f) + 10f;
+                float speed = (_ranking[i].Equipment.Speed * _ranking[i].Equipment.Performance) * (_ranking[i].Equipment.Quality * (float)Math.Sqrt(_ranking[i].Equipment.Quality) / 1000f) + 10f;
                 var section = GetSectionBySectionData(data);
 
                 //
@@ -281,7 +314,7 @@ namespace Controller
                 driversChanged = driversChangedTemp || driversChanged;
             }
 
-           
+
             if (AllPlayersFinished())
             {
                 RaceFinished?.Invoke(this, new EventArgs());
@@ -334,7 +367,7 @@ namespace Controller
         private void AddTimeToParticipant(IParticipant participant, DateTime time)
         {
             DateTime cache = _sectionTimeCache[participant];
-            _currentTimeOnSection[participant] =  time - cache;
+            _currentTimeOnSection[participant] = time - cache;
         }
 
         // Assigns time to contestor for a lap

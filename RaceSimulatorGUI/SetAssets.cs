@@ -17,7 +17,7 @@ namespace RaceSimulatorGUI
             Image = new Dictionary<string, Bitmap>();
         }
 
-        
+
 
         public static Bitmap CreateEmptyBitmap(int width, int height)
         {
@@ -37,7 +37,7 @@ namespace RaceSimulatorGUI
         }
 
 
-       
+
         public static Bitmap LoadImg(string imgUrl)
         {
             if (Image.ContainsKey(imgUrl))

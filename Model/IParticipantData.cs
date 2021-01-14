@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Model {
-    public interface IParticipantData {
+namespace Model
+{
+    public interface IParticipantData
+    {
 
         public IParticipant Contestor { get; set; }
 

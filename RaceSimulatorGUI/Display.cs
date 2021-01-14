@@ -9,8 +9,10 @@ using System.Text;
 using System.Windows.Ink;
 using System.Windows.Media.Imaging;
 
-namespace RaceSimulatorGUI {
-    public static class Display {
+namespace RaceSimulatorGUI
+{
+    public static class Display
+    {
 
         private const int direction = 1;
         private static List<SetIMG> assets;
@@ -35,31 +37,37 @@ namespace RaceSimulatorGUI {
         private static readonly string _carBlueBroken = ".\\Assets\\Broken_Blue_Car.png";
         #endregion
 
-        public static void Initialise() {
+        public static void Initialise()
+        {
             assets = new List<SetIMG>();
             SetAssets.Initialise();
         }
 
-      
-        public static List<SetIMG> GetGridSquares() {
+
+        public static List<SetIMG> GetGridSquares()
+        {
             return assets;
         }
 
-        public static BitmapSource DrawTrack(Track track) {
+        public static BitmapSource DrawTrack(Track track)
+        {
             Bitmap trackBitmap = DrawBaseTrack(track);
             Bitmap driverBitmap = DrawParticipants(trackBitmap);
             return SetAssets.CreateBitmapSourceFromGdiBitmap(driverBitmap);
         }
 
-        private static SetIMG GetGridSquare(int x, int y) {
+        private static SetIMG GetGridSquare(int x, int y)
+        {
             SetIMG square = assets.Find(_square => _square.X == x && _square.Y == y);
             return square;
         }
 
 
-        private static Bitmap GetParticipantImage(IParticipant participant, int compass) {
+        private static Bitmap GetParticipantImage(IParticipant participant, int compass)
+        {
             Bitmap car = null;
-            switch (participant.TeamColour) {
+            switch (participant.TeamColour)
+            {
                 case TeamColours.Blue:
                     if (participant.Equipment.IsBroken)
                         car = SetAssets.LoadImg(_carBlueBroken);
@@ -92,10 +100,11 @@ namespace RaceSimulatorGUI {
                     break;
             }
             Bitmap carCorrectOrientation = new Bitmap(car);
-            switch (compass) {
+            switch (compass)
+            {
                 case 1:
                     carCorrectOrientation.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                  break;
+                    break;
                 case 2:
                     carCorrectOrientation.RotateFlip(RotateFlipType.Rotate180FlipNone);
                     break;
@@ -105,39 +114,45 @@ namespace RaceSimulatorGUI {
             }
             return carCorrectOrientation;
         }
-       
 
-        private static void MoveParticipantsAtStart() {
-            Race race = Data.CurrentRace;
-            foreach (var section in race.Track.Sections.Where(section => section.SectionType == SectionTypes.StartGrid)) {
-                SectionData data = race.GetSectionData(section);
-                switch(direction) {
-                    case 0:
-                        data.DistanceLeft = 60;
-                        data.DistanceRight = 170;
-                        break;
-                    case 1:
-                        data.DistanceLeft = 140;
-                        data.DistanceRight = 30;
-                        break;
-                    case 2:
-                        data.DistanceLeft = 140;
-                        data.DistanceRight = 15;
-                        break;
-                    case 3:
-                        data.DistanceLeft = 55;
-                        data.DistanceRight = 170;
-                        break;
-                }
-            }
-        }
 
-        private static int GetXOffset(bool left, int comp, float dist) {
+        //private static void MoveParticipantsAtStart()
+        //{
+        //    Race race = Data.CurrentRace;
+        //    foreach (var section in race.Track.Sections.Where(section => section.SectionType == SectionTypes.StartGrid))
+        //    {
+        //        SectionData data = race.GetSectionData(section);
+        //        switch (direction)
+        //        {
+        //            case 0:
+        //                data.DistanceLeft = 60;
+        //                data.DistanceRight = 170;
+        //                break;
+        //            case 1:
+        //                data.DistanceLeft = 140;
+        //                data.DistanceRight = 30;
+        //                break;
+        //            case 2:
+        //                data.DistanceLeft = 140;
+        //                data.DistanceRight = 15;
+        //                break;
+        //            case 3:
+        //                data.DistanceLeft = 55;
+        //                data.DistanceRight = 170;
+        //                break;
+        //        }
+        //    }
+        //}
+
+        private static int GetXOffset(bool left, int comp, float dist)
+        {
             float distance = dist;
-            if (dist > 239) 
+            if (dist > 239)
                 distance = 239f;
-            if(left) {
-                switch(comp) {
+            if (left)
+            {
+                switch (comp)
+                {
                     case 0:
                         return 68;
                     case 1:
@@ -147,8 +162,11 @@ namespace RaceSimulatorGUI {
                     case 3:
                         return (int)Math.Abs(distance - 239);
                 }
-            } else {
-                switch (comp) {
+            }
+            else
+            {
+                switch (comp)
+                {
                     case 0:
                         return 145;
                     case 1:
@@ -162,12 +180,15 @@ namespace RaceSimulatorGUI {
             return 0;
         }
 
-        private static int GetYOffset(bool left, int comp, float dist) {
+        private static int GetYOffset(bool left, int comp, float dist)
+        {
             float distance = dist;
             if (dist > 239)
                 distance = 239f;
-            if (left) {
-                switch (comp) {
+            if (left)
+            {
+                switch (comp)
+                {
                     case 0:
                         return (int)Math.Abs(distance - 239);
                     case 1:
@@ -177,8 +198,11 @@ namespace RaceSimulatorGUI {
                     case 3:
                         return 140;
                 }
-            } else {
-                switch (comp) {
+            }
+            else
+            {
+                switch (comp)
+                {
                     case 0:
                         return (int)Math.Abs(distance - 239);
                     case 1:
@@ -192,33 +216,39 @@ namespace RaceSimulatorGUI {
             return 0;
         }
 
-         private static Bitmap DrawParticipants(Bitmap trackBitmap) {
+        private static Bitmap DrawParticipants(Bitmap trackBitmap)
+        {
             int maxX = assets.Max(_square => _square.X);
             int maxY = assets.Max(_square => _square.Y);
             Bitmap driverBitmap = new Bitmap(trackBitmap);
             Graphics graphics = Graphics.FromImage(driverBitmap);
-            for (int y = 0; y <= maxY; y++) {
-                for (int x = 0; x <= maxX; x++) {
+            for (int y = 0; y <= maxY; y++)
+            {
+                for (int x = 0; x <= maxX; x++)
+                {
                     SetIMG square = GetGridSquare(x, y);
                     if (square?.SectionData.Left == null && square?.SectionData.Right == null) continue;
                     Bitmap car = null;
-                    if (square.SectionData.Left != null) {
+                    if (square.SectionData.Left != null)
+                    {
                         IParticipant participant = square.SectionData.Left;
                         car = GetParticipantImage(participant, square.Compass);
                         graphics.DrawImage(car, x * 239 + GetXOffset(true, square.Compass, square.SectionData.DistanceLeft), y * 239 + GetYOffset(true, square.Compass, square.SectionData.DistanceLeft));
-                    } 
-                    if (square.SectionData.Right != null) { 
+                    }
+                    if (square.SectionData.Right != null)
+                    {
                         IParticipant participant = square.SectionData.Right;
                         car = GetParticipantImage(participant, square.Compass);
                         graphics.DrawImage(car, x * 239 + GetXOffset(false, square.Compass, square.SectionData.DistanceRight), y * 239 + GetYOffset(false, square.Compass, square.SectionData.DistanceRight));
                     }
-                    
+
                 }
             }
             return driverBitmap;
         }
 
-        private static Bitmap DrawBaseTrack(Track track) {
+        private static Bitmap DrawBaseTrack(Track track)
+        {
             if (Display.track == track) return bitmap;
             Display.track = track;
             CalculateGrid(track.Sections);
@@ -229,15 +259,21 @@ namespace RaceSimulatorGUI {
             Bitmap background = SetAssets.CreateEmptyBitmap(239 * maxX + 239, 239 * maxY + 239);
             Bitmap empty = SetAssets.CreateEmptyBitmap(239, 239);
             Graphics graphics = Graphics.FromImage(background);
-            for (int y = 0; y <= maxY; y++) {
-                for (int x = 0; x <= maxX; x++) {
+            for (int y = 0; y <= maxY; y++)
+            {
+                for (int x = 0; x <= maxX; x++)
+                {
                     SetIMG square = GetGridSquare(x, y);
                     Bitmap currTile = null;
-                    if (square == null) {
+                    if (square == null)
+                    {
                         currTile = empty;
-                    } else {
+                    }
+                    else
+                    {
                         currTile = new Bitmap(SetAssets.LoadImg(square.ImagePath));
-                        switch (square.Compass) {
+                        switch (square.Compass)
+                        {
                             case 0:
                                 if (square.Turn)
                                     currTile.RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -270,17 +306,20 @@ namespace RaceSimulatorGUI {
             return background;
         }
 
-        private static void CalculateGrid(LinkedList<Section> sections) {
+        private static void CalculateGrid(LinkedList<Section> sections)
+        {
             Race race = Data.CurrentRace;
             int comp = direction;
             int x = 0, y = 0;
             assets?.Clear();
             SetIMG.MinX = 0;
             SetIMG.MinY = 0;
-            foreach (Section section in sections) {
+            foreach (Section section in sections)
+            {
                 SectionTypes type = section.SectionType;
                 SectionData data = race.GetSectionData(section);
-                switch (type) {
+                switch (type)
+                {
                     case SectionTypes.StartGrid:
                         assets.Add(new SetIMG(x, y, _start, data, comp));
                         break;
@@ -301,20 +340,29 @@ namespace RaceSimulatorGUI {
                         assets.Add(new SetIMG(x, y, _finish, data, comp));
                         break;
                 }
-                if (comp == 0) {
+                if (comp == 0)
+                {
                     y--;
-                } else if (comp == 1) {
+                }
+                else if (comp == 1)
+                {
                     x++;
-                } else if (comp == 2) {
+                }
+                else if (comp == 2)
+                {
                     y++;
-                } else {
+                }
+                else
+                {
                     x--;
                 }
             }
         }
 
-        private static void MoveGrid(int x, int y) {
-            foreach (SetIMG square in assets) {
+        private static void MoveGrid(int x, int y)
+        {
+            foreach (SetIMG square in assets)
+            {
                 square.X += x;
                 square.Y += y;
             }

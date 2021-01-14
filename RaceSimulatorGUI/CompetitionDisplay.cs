@@ -6,18 +6,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace RaceSimulatorGUI {
-    public class CompetitionDisplay : INotifyPropertyChanged {
+namespace RaceSimulatorGUI
+{
+    public class CompetitionDisplay : INotifyPropertyChanged
+    {
 
         public event PropertyChangedEventHandler PropertyChanged;
         public List<DisplayPoints> ParticipantPoints { get; set; }
 
-        public void OnRaceFinished(object sender, EventArgs e) {
+        public void OnRaceFinished(object sender, EventArgs e)
+        {
             DetermineRanking();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }
 
-        public void UpdateList() {
+        public void UpdateList()
+        {
             DetermineRanking();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }
@@ -30,7 +34,8 @@ namespace RaceSimulatorGUI {
                 Data.CurrentRace.RaceFinished += OnRaceFinished;
         }
 
-        public void OnRaceStarted(object sender, EventArgs e) {
+        public void OnRaceStarted(object sender, EventArgs e)
+        {
             RaceStartedEventArgs e1 = (RaceStartedEventArgs)e;
             e1.Race.RaceFinished += OnRaceFinished;
         }

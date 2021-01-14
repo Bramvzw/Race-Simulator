@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Model {
-    public class ParticipantSectionTime : ParticipantTime {
+namespace Model
+{
+    public class ParticipantSectionTime : ParticipantTime
+    {
 
         public Section Section { get; set; }
 

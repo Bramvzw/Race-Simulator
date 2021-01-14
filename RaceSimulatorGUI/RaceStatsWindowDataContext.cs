@@ -6,8 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace RaceSimulatorGUI {
-    public class RaceStatsWindowDataContext : INotifyPropertyChanged {
+namespace RaceSimulatorGUI
+{
+    public class RaceStatsWindowDataContext : INotifyPropertyChanged
+    {
         public event PropertyChangedEventHandler PropertyChanged;
         public string TrackName { get => $"{Data.CurrentRace.Track.Name}"; }
 
@@ -19,7 +21,8 @@ namespace RaceSimulatorGUI {
 
         public string BestOvertaker { get => $"{Data.Competition.ContestorOvertaken.GetLeadingContestor()} heeft het vaakst ingehaald"; }
 
-        public RaceStatsWindowDataContext() {
+        public RaceStatsWindowDataContext()
+        {
             RankingDisplay = new List<DisplayRanking>();
             LapTimeDisplay = new List<DisplayTime>();
             Race.RaceStarted += OnRaceStarted;
@@ -27,18 +30,21 @@ namespace RaceSimulatorGUI {
                 Data.CurrentRace.DriversChanged += OnDriversChanged;
         }
 
-        ~RaceStatsWindowDataContext() {
+        ~RaceStatsWindowDataContext()
+        {
             Race.RaceStarted -= OnRaceStarted;
             Data.CurrentRace.DriversChanged -= OnDriversChanged;
         }
 
-        public void OnDriversChanged(object sender, EventArgs e) {
+        public void OnDriversChanged(object sender, EventArgs e)
+        {
             DetermineRanking(RankingDisplay);
             DetermineLapTime(LapTimeDisplay);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }
 
-        private List<DisplayRanking> DetermineRanking(List<DisplayRanking> display) {
+        private List<DisplayRanking> DetermineRanking(List<DisplayRanking> display)
+        {
             display.Clear();
             Data.Competition.Contestors.ForEach(participant => display.Add(new DisplayRanking(participant, Data.CurrentRace.GetRankingOfParticipant(participant), Data.CurrentRace.GetIsFinished(participant))));
             display = display.OrderBy(p => p.Position).ToList();
@@ -47,7 +53,8 @@ namespace RaceSimulatorGUI {
             return display;
         }
 
-        private List<DisplayTime> DetermineLapTime(List<DisplayTime> display) {
+        private List<DisplayTime> DetermineLapTime(List<DisplayTime> display)
+        {
             display.Clear();
             Data.Competition.Contestors.ForEach(participant => display.Add(new DisplayTime(participant, display.Count + 1, Data.CurrentRace.GetIsFinished(participant))));
             display = display.OrderBy(p => p.TimeSpan).ToList();
@@ -56,7 +63,8 @@ namespace RaceSimulatorGUI {
             return display;
         }
 
-        public void OnRaceStarted(object sender, EventArgs e) {
+        public void OnRaceStarted(object sender, EventArgs e)
+        {
             RaceStartedEventArgs e1 = (RaceStartedEventArgs)e;
             e1.Race.DriversChanged += OnDriversChanged;
         }
