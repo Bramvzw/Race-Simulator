@@ -227,7 +227,7 @@ namespace Controller
                 distance = data.DistanceLeft;
             else
                 distance = data.DistanceRight;
-            distance += (int) Math.Ceiling(speed);
+            distance += (int)Math.Ceiling(speed);
             if (left)
                 data.DistanceLeft = distance;
             else
@@ -245,7 +245,7 @@ namespace Controller
                     _finished[contestor] = true;
 
                     // When the contestor has driven enough laps
-                    if (_ContHascompletedLaps[contestor] > 2)
+                    if (_ContHascompletedLaps[contestor] == 1)
                     {
                         _finalRanking.Add(_finalRanking.Count + 1, contestor);
                         if (left)
@@ -315,7 +315,7 @@ namespace Controller
             }
 
 
-            if (AllPlayersFinished())
+            if (AllContestorsFinished())
             {
                 RaceFinished?.Invoke(this, new EventArgs());
             }
@@ -339,7 +339,7 @@ namespace Controller
         }
 
         // 
-        public bool AllPlayersFinished()
+        public bool AllContestorsFinished()
         {
             return _ranking.All(rank => rank.Value.Points > 2);
         }
@@ -381,7 +381,14 @@ namespace Controller
         {
             foreach (Section section in Track.Sections)
             {
-                SectionData.Add(section, new SectionData());
+                if (section != null)
+                {
+                    SectionData.Add(section, new SectionData());
+                }
+                else
+                {
+                    DetermineRanking(); 
+                }
             }
         }
 

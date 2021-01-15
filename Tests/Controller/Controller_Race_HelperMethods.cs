@@ -30,7 +30,7 @@ namespace ControllerTest
         [Test]
         public void AllPlayersFinished_PlayersNotFinished()
         {
-            bool actual = race.AllPlayersFinished();
+            bool actual = race.AllContestorsFinished();
             Assert.IsFalse(actual);
         }
 
@@ -38,7 +38,7 @@ namespace ControllerTest
         public void AllPlayersFinished_PlayersFinished()
         {
             race.Contestors.ForEach(_participant => _participant.Points = 3);
-            bool actual = race.AllPlayersFinished();
+            bool actual = race.AllContestorsFinished();
             Assert.IsTrue(actual);
         }
 

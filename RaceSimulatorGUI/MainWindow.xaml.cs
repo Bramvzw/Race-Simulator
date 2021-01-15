@@ -80,5 +80,10 @@ namespace RaceSimulatorGUI
             _raceStats = new RaceStats();
             _raceStats.Show();
         }
+        private void RaceEnded(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            _competitionStats.Show();
+        }
     }
 }
