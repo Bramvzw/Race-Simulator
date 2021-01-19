@@ -22,13 +22,15 @@ namespace Model
                 return;
             }
             if (Time < participant.Time)
+            {
                 participant.Time = Time;
+            }
         }
 
         // Returns the contestor with the lowest time
         public string GetLeadingContestor(List<IParticipantData> participantData)
         {
-            var timeData = participantData.Cast<ParticipantTime>();
+            IEnumerable<ParticipantTime> timeData = participantData.Cast<ParticipantTime>();
             TimeSpan maxTime = TimeSpan.MaxValue;
             string bestParticipant = "";
             foreach (ParticipantTime time in timeData)

@@ -69,7 +69,7 @@ namespace Controller
 
         public static void NextRace()
         {
-           CurrentRace?.DisposeEventHandler();
+           CurrentRace?.CleanEventHandler();
             Track nexttrack = Competition.NextTrack();
             if (nexttrack == null)
                 CurrentRace = null;
@@ -85,12 +85,18 @@ namespace Controller
         // Sets the contestors in order when they have finished in th finalranking dictionary
         public static void PutParticipantsInOrderOfFinish()
         {
-            if (CurrentRace == null) return;
-            Competition.Contestors.Clear();
-            Dictionary<int, IParticipant> finalRanking = CurrentRace.GetFinalRanking();
-            for (int i = 1; i <= finalRanking.Count; i++)
+            if (CurrentRace == null)
             {
-                Competition.Contestors.Add(finalRanking[i]);
+                return;
+            }
+            else
+            {
+                Competition.Contestors.Clear();
+                Dictionary<int, IParticipant> finalRanking = CurrentRace.GetFinalRanking();
+                for (int i = 1; i <= finalRanking.Count; i++)
+                {
+                    Competition.Contestors.Add(finalRanking[i]);
+                }
             }
         }
 

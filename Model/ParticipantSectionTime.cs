@@ -11,17 +11,19 @@ namespace Model
 
         public Section Section { get; set; }
 
-
         public override void Assign(List<IParticipantData> participantData)
         {
-            var sectionTimeData = participantData.Cast<ParticipantSectionTime>();
-            var participant = sectionTimeData.FirstOrDefault(data => data.Contestor.Name == Name && data.Section == Section);
-            if (participant == null)
+            IEnumerable<ParticipantSectionTime> sectionTimeData = participantData.Cast<ParticipantSectionTime>();
+            ParticipantSectionTime participant = sectionTimeData.FirstOrDefault(data => data.Contestor.Name == Name && data.Section == Section);
+            if (participant != null)
+            {
+                participant.Time = Time;
+            }
+            else
             {
                 participantData.Add(this);
                 return;
             }
-            participant.Time = Time;
         }
     }
 }

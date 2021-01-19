@@ -13,7 +13,7 @@ namespace RaceSimulatorGUI
         public static int MinX { get; set; }
         public static int MinY { get; set; }
         public string ImagePath { get; set; }
-        public int Compass { get; set; }
+        public int Direction { get; set; }
         public bool Turn { get; set; }
 
         public SectionData SectionData { get; set; }
@@ -26,7 +26,7 @@ namespace RaceSimulatorGUI
             Y = y;
             ImagePath = imagePath;
             SectionData = sectionData;
-            Compass = compass;
+            Direction = compass;
             Turn = flip;
             SetLowestCoordinates(x, y);
 

@@ -8,9 +8,10 @@ namespace Model
     public class ParticipantsPassing : IParticipantData
     {
 
-        public string PasserName { get; set; }
         public string PassedName { get; set; }
         public int Count { get; set; }
+        public string PasserName { get; set; }
+
         public IParticipant Contestor { get; set; }
 
         public ParticipantsPassing(string PasserName, string PassedName)
@@ -22,24 +23,24 @@ namespace Model
         // For testing purposes
         public void Assign(List<IParticipantData> participantData)
         {
-            var overtakenData = participantData.Cast<ParticipantsPassing>();
-            var participant = overtakenData.FirstOrDefault(data => data.PasserName == this.PasserName);
-            if (participant == null)
+            IEnumerable<ParticipantsPassing> overtakenData = participantData.Cast<ParticipantsPassing>();
+            ParticipantsPassing participant = overtakenData.FirstOrDefault(data => data.PasserName == this.PasserName);
+            if (participant != null)
             {
-                this.Count++;
-                participantData.Add(this);
+                participant.Count++;
             }
             else
             {
-                participant.Count++;
+                this.Count++;
+                participantData.Add(this);
             }
         }
 
         // Returns the name of the contestor that has the most passed other contestors
         public string GetLeadingContestor(List<IParticipantData> participantData)
         {
-            var overtakenData = participantData.Cast<ParticipantsPassing>();
-            int maxOvertaken = Int32.MaxValue;
+            IEnumerable<ParticipantsPassing> overtakenData = participantData.Cast<ParticipantsPassing>();
+            int maxOvertaken = int.MaxValue;
             string bestParticipant = "";
             foreach (ParticipantsPassing overtaken in overtakenData)
             {

@@ -11,7 +11,13 @@ namespace RaceSimulatorGUI
     public class RaceStatsWindowDataContext : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public string TrackName { get => $"{Data.CurrentRace.Track.Name}"; }
+        public string TrackName
+        {
+            get
+            {
+                return $"{Data.CurrentRace.Track.Name}";
+            }
+        }
 
         public List<DisplayTime> LapTimeDisplay { get => DetermineLapTime(_lapTimeDisplay); set => _lapTimeDisplay = value; }
 
@@ -46,7 +52,7 @@ namespace RaceSimulatorGUI
         private List<DisplayRanking> DetermineRanking(List<DisplayRanking> display)
         {
             display.Clear();
-            Data.Competition.Contestors.ForEach(participant => display.Add(new DisplayRanking(participant, Data.CurrentRace.GetRankingOfParticipant(participant), Data.CurrentRace.GetIsFinished(participant))));
+            Data.Competition.Contestors.ForEach(participant => display.Add(new DisplayRanking(participant, Data.CurrentRace.GetRankingOfParticipant(participant), Data.CurrentRace.GetFinishedContestors(participant))));
             display = display.OrderBy(p => p.Position).ToList();
             for (int i = 1; i <= display.Count; i++)
                 display[i - 1].Position = i;
@@ -56,7 +62,7 @@ namespace RaceSimulatorGUI
         private List<DisplayTime> DetermineLapTime(List<DisplayTime> display)
         {
             display.Clear();
-            Data.Competition.Contestors.ForEach(participant => display.Add(new DisplayTime(participant, display.Count + 1, Data.CurrentRace.GetIsFinished(participant))));
+            Data.Competition.Contestors.ForEach(participant => display.Add(new DisplayTime(participant, display.Count + 1, Data.CurrentRace.GetFinishedContestors(participant))));
             display = display.OrderBy(p => p.TimeSpan).ToList();
             for (int i = 1; i <= display.Count; i++)
                 display[i - 1].Position = i;

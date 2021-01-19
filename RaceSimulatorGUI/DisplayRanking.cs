@@ -14,7 +14,7 @@ namespace RaceSimulatorGUI
         public int Position { get; set; }
         public string Name { get; set; }
         public Brush Brush { get; set; }
-        public bool Finished { get; set; }
+        public bool RaceisFinished { get; set; }
 
         public DisplayRanking(IParticipant participant, int place, bool finished)
         {
@@ -41,7 +41,7 @@ namespace RaceSimulatorGUI
                     Brush = new SolidColorBrush(Color.FromRgb(15, 255, 15));
                     break;
             }
-            Finished = finished;
+            RaceisFinished = finished;
             Brush.Freeze();
         }
     }

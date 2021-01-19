@@ -16,7 +16,9 @@ namespace RaceSimulatorGUI
         {
             Race.RaceStarted += OnRaceStarted;
             if (Data.CurrentRace != null)
+            {
                 Data.CurrentRace.DriversChanged += OnDriversChanged;
+            }
         }
 
         public void OnDriversChanged(object sender, EventArgs e)

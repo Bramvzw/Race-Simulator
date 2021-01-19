@@ -30,7 +30,7 @@ namespace ControllerTest
         [Test]
         public void AllPlayersFinished_PlayersNotFinished()
         {
-            bool actual = race.AllPlayersFinished();
+            bool actual = race.AllContestorsFinished();
             Assert.IsFalse(actual);
         }
 
@@ -38,7 +38,7 @@ namespace ControllerTest
         public void AllPlayersFinished_PlayersFinished()
         {
             race.Contestors.ForEach(_participant => _participant.Points = 3);
-            bool actual = race.AllPlayersFinished();
+            bool actual = race.AllContestorsFinished();
             Assert.IsTrue(actual);
         }
 
@@ -46,7 +46,7 @@ namespace ControllerTest
         public void GetSectionDataByParticipant_ParticipantNotOnTrack_ReturnNull()
         {
             participants.Add(new Driver("Unknown", new Car()));
-            SectionData sectionData = race.GetSectionDataByParticipant(participants[2]);
+            SectionData sectionData = race.GetContestorSectionData(participants[2]);
             Assert.IsNull(sectionData);
         }
 
@@ -54,7 +54,7 @@ namespace ControllerTest
         public void GetSectionDataByParticipant_ParticipantOnTrack_ReturnData()
         {
             SectionData expected = race.GetSectionData(track.Sections?.First?.Value);
-            SectionData actual = race.GetSectionDataByParticipant(participants[0]);
+            SectionData actual = race.GetContestorSectionData(participants[0]);
             Assert.AreEqual(expected, actual);
         }
 
@@ -94,7 +94,7 @@ namespace ControllerTest
         public void MoveParticipant_NextSection_ReturnTrue()
         {
             bool expected = true;
-            bool actual = race.MoveParticipants(participants[0], race.GetSectionDataByParticipant(participants[0]), 300,
+            bool actual = race.MoveParticipants(participants[0], race.GetContestorSectionData(participants[0]), 300,
                 true, false, track.Sections.First?.Value, DateTime.Now);
             Assert.AreEqual(expected, actual);
         }
@@ -103,7 +103,7 @@ namespace ControllerTest
         public void MoveParticipant_SameSection_ReturnFalse()
         {
             bool expected = false;
-            bool actual = race.MoveParticipants(participants[0], race.GetSectionDataByParticipant(participants[0]), 100,
+            bool actual = race.MoveParticipants(participants[0], race.GetContestorSectionData(participants[0]), 100,
                 true, false, track.Sections.First?.Value, DateTime.Now);
             Assert.AreEqual(expected, actual);
         }
@@ -111,9 +111,9 @@ namespace ControllerTest
         [Test]
         public void DetermineRanking_ProperOrder()
         {
-            race.DetermineRanking();
+            race.GetRankingContestors();
             var rankingBefore = new Dictionary<int, IParticipant>(race.GetRanking());
-            SectionData data = race.GetSectionDataByParticipant(participants[0]);
+            SectionData data = race.GetContestorSectionData(participants[0]);
             data.Right = null;
             data.Left = null;
             data = race.GetSectionData(
@@ -121,7 +121,7 @@ namespace ControllerTest
             data.Left = participants[0];
             SectionData data1 = race.GetSectionData(track.Sections.Last?.Value);
             data1.Left = participants[1];
-            race.DetermineRanking();
+            race.GetRankingContestors();
             var rankingAfter = new Dictionary<int, IParticipant>(race.GetRanking());
             foreach (KeyValuePair<int, IParticipant> pair in rankingBefore)
             {

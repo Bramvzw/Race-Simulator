@@ -18,12 +18,7 @@ namespace Model
         public RaceData<ParticipantPoints> ContestorPoints { get; set; }
 
 
-        public Track NextTrack()
-        {
-            Track returnTrack = null;
-            Tracks.TryDequeue(out returnTrack);
-            return returnTrack;
-        }
+       
 
         public Competition()
         {
@@ -39,15 +34,15 @@ namespace Model
 
         public void AssignPoints(Dictionary<int, IParticipant> EndPositions)
         {
-            // Assign points to contestors
-            /*
-             * 1: 30 points
-             * 2: 24 points
-             * 3: 18 points
-             * 4: 12 points
-             * 5: 6  points
-             */
             int points = 30;
+
+            // Assign points to contestors
+            // 1: 30 points
+            // 2: 24 points
+            // 3: 18 points
+            // 4: 12 points
+            // 5: 6  points
+
             for (int i = 1; i <= EndPositions.Count; i++)
             {
                 switch (i)
@@ -67,7 +62,7 @@ namespace Model
                 // Addds contestors to Contestor List
                 IParticipant contestor = Contestors.First(p => p.Name == EndPositions[i].Name);
                 contestor.Points += points;
-                ContestorPoints.AddToList(
+                ContestorPoints.AssignToList(
                     new ParticipantPoints()
                     {
                         Name = EndPositions[i].Name,
@@ -82,7 +77,7 @@ namespace Model
         // Creates new LapTime in list in RaceData participantdata 
         public void AddLapTime(IParticipant contestor, Track track, TimeSpan time)
         {
-            ContestorTime.AddToList(new ParticipantTime()
+            ContestorTime.AssignToList(new ParticipantTime()
             {
                 Name = contestor.Name,
                 Track = track,
@@ -94,7 +89,7 @@ namespace Model
         // Creates new SectionTime in list in RaceData participantdata 
         public void SetSectionTime(IParticipant contestor, TimeSpan time, Section section)
         {
-            ContestorSectionTime.AddToList(new ParticipantSectionTime()
+            ContestorSectionTime.AssignToList(new ParticipantSectionTime()
             {
 
                 Name = contestor.Name,
@@ -108,7 +103,14 @@ namespace Model
         public void ContestorPassed(IParticipant passer, IParticipant passed)
         {
             Debug.Write($"{passed.Name} is ingehaald door {passer.Name}\n");
-            ContestorOvertaken.AddToList(new ParticipantsPassing(passer.Name, passed.Name));
+            ContestorOvertaken.AssignToList(new ParticipantsPassing(passer.Name, passed.Name));
+        }
+
+        public Track NextTrack()
+        {
+            Track returnTrack = null;
+            Tracks.TryDequeue(out returnTrack);
+            return returnTrack;
         }
 
         // Clean Data when a race ends
@@ -122,7 +124,7 @@ namespace Model
         // Add contestor to list when the contestor's car is broken
         public void ContestorBrokenCount(IParticipant contestor, int count)
         {
-            ContestorCountBroken.AddToList(new ParticipantBreakDown()
+            ContestorCountBroken.AssignToList(new ParticipantBreakDown()
             {
                 Name = contestor.Name,
                 Count = count,

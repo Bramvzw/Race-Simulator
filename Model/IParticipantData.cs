@@ -8,9 +8,9 @@ namespace Model
     {
 
         public IParticipant Contestor { get; set; }
+        public string GetLeadingContestor(List<IParticipantData> participantData);
 
         public void Assign(List<IParticipantData> contestorData);
 
-        public string GetLeadingContestor(List<IParticipantData> participantData);
     }
 }

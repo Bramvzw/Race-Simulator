@@ -42,17 +42,17 @@ namespace ControllerTest
             };
             var overtaken = new ParticipantsPassing("Test1", "Test2") { Contestor = _participants[0] };
             var brokenDown = new ParticipantBreakDown() { Name = "Test1", Count = 1, Contestor = _participants[0] };
-            _participantPoints.AddToList(points);
-            _participantTime.AddToList(time);
-            _participantsOvertaken.AddToList(overtaken);
-            _particpantTimesBrokenDown.AddToList(brokenDown);
-            _participantSectionTime.AddToList(sectionTime);
+            _participantPoints.AssignToList(points);
+            _participantTime.AssignToList(time);
+            _participantsOvertaken.AssignToList(overtaken);
+            _particpantTimesBrokenDown.AssignToList(brokenDown);
+            _participantSectionTime.AssignToList(sectionTime);
             int expected = 1;
-            int pointsActual = _participantPoints.CountList();
-            int timeActual = _participantTime.CountList();
-            int overtakenActual = _participantsOvertaken.CountList();
-            int brokenDownActual = _particpantTimesBrokenDown.CountList();
-            int sectionTimeActual = _participantSectionTime.CountList();
+            int pointsActual = _participantPoints.getSizeList();
+            int timeActual = _participantTime.getSizeList();
+            int overtakenActual = _participantsOvertaken.getSizeList();
+            int brokenDownActual = _particpantTimesBrokenDown.getSizeList();
+            int sectionTimeActual = _participantSectionTime.getSizeList();
             Assert.AreEqual(expected, pointsActual);
             Assert.AreEqual(expected, timeActual);
             Assert.AreEqual(expected, overtakenActual);
@@ -65,8 +65,8 @@ namespace ControllerTest
         {
             var expected = new ParticipantPoints() { Name = "Test1", Points = 5, Contestor = _participants[0] };
             var test = new ParticipantPoints() { Name = "Test2", Points = 3, Contestor = _participants[1] };
-            _participantPoints.AddToList(expected);
-            _participantPoints.AddToList(test);
+            _participantPoints.AssignToList(expected);
+            _participantPoints.AssignToList(test);
             var actual = _participantPoints.GetLeadingContestor();
             Assert.AreEqual(expected.Name, actual);
         }
@@ -74,8 +74,8 @@ namespace ControllerTest
         [Test]
         public void BestParticipant_Overtaken()
         {
-            _participantsOvertaken.AddToList(new ParticipantsPassing("Test1", "Test2") { Contestor = _participants[0] });
-            _participantsOvertaken.AddToList(new ParticipantsPassing("Test2", "Test1") { Contestor = _participants[1] });
+            _participantsOvertaken.AssignToList(new ParticipantsPassing("Test1", "Test2") { Contestor = _participants[0] });
+            _participantsOvertaken.AssignToList(new ParticipantsPassing("Test2", "Test1") { Contestor = _participants[1] });
             var expected = _participants[0].Name;
             var actual = _participantsOvertaken.GetLeadingContestor();
             Assert.AreEqual(expected, actual);
@@ -84,8 +84,8 @@ namespace ControllerTest
         [Test]
         public void BestParticipant_Time()
         {
-            _participantTime.AddToList(new ParticipantTime() { Name = "Test1", Time = new TimeSpan(0, 5, 30), Contestor = _participants[0] });
-            _participantTime.AddToList(new ParticipantTime() { Name = "Test2", Time = new TimeSpan(0, 7, 45), Contestor = _participants[1] });
+            _participantTime.AssignToList(new ParticipantTime() { Name = "Test1", Time = new TimeSpan(0, 5, 30), Contestor = _participants[0] });
+            _participantTime.AssignToList(new ParticipantTime() { Name = "Test2", Time = new TimeSpan(0, 7, 45), Contestor = _participants[1] });
             var expected = _participants[0].Name;
             var actual = _participantTime.GetLeadingContestor();
             Assert.AreEqual(expected, actual);
@@ -94,9 +94,9 @@ namespace ControllerTest
         [Test]
         public void BestParticipant_BrokenDown()
         {
-            _particpantTimesBrokenDown.AddToList(new ParticipantBreakDown() { Name = "Test1", Count = 1, Contestor = _participants[0] });
-            _particpantTimesBrokenDown.AddToList(new ParticipantBreakDown() { Name = "Test2", Count = 2, Contestor = _participants[1] });
-            _particpantTimesBrokenDown.AddToList(new ParticipantBreakDown() { Name = "Test2", Count = 1, Contestor = _participants[1] });
+            _particpantTimesBrokenDown.AssignToList(new ParticipantBreakDown() { Name = "Test1", Count = 1, Contestor = _participants[0] });
+            _particpantTimesBrokenDown.AssignToList(new ParticipantBreakDown() { Name = "Test2", Count = 2, Contestor = _participants[1] });
+            _particpantTimesBrokenDown.AssignToList(new ParticipantBreakDown() { Name = "Test2", Count = 1, Contestor = _participants[1] });
             var expected = _participants[0].Name;
             var actual = _particpantTimesBrokenDown.GetLeadingContestor();
             Assert.AreEqual(expected, actual);
@@ -105,9 +105,9 @@ namespace ControllerTest
         [Test]
         public void GetParticipantData()
         {
-            _particpantTimesBrokenDown.AddToList(new ParticipantBreakDown() { Name = "Test1", Count = 1, Contestor = _participants[0] });
-            _particpantTimesBrokenDown.AddToList(new ParticipantBreakDown() { Name = "Test2", Count = 2, Contestor = _participants[1] });
-            _particpantTimesBrokenDown.AddToList(new ParticipantBreakDown() { Name = "Test2", Count = 1, Contestor = _participants[1] });
+            _particpantTimesBrokenDown.AssignToList(new ParticipantBreakDown() { Name = "Test1", Count = 1, Contestor = _participants[0] });
+            _particpantTimesBrokenDown.AssignToList(new ParticipantBreakDown() { Name = "Test2", Count = 2, Contestor = _participants[1] });
+            _particpantTimesBrokenDown.AssignToList(new ParticipantBreakDown() { Name = "Test2", Count = 1, Contestor = _participants[1] });
             var expected = _participants[0].Name;
             var actual = _particpantTimesBrokenDown.GetContestorData(_participants[0]).Contestor.Name;
             Assert.AreEqual(expected, actual);

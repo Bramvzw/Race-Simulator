@@ -25,8 +25,8 @@ namespace ControllerTest
         {
             int expectedX = -4;
             int expectedY = -3;
-            Assert.AreEqual(expectedX, GridSquare.LowestX);
-            Assert.AreEqual(expectedY, GridSquare.LowestY);
+            Assert.AreEqual(expectedX, GridSquare.XCoordinate);
+            Assert.AreEqual(expectedY, GridSquare.YCoordinate);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace RaceSimulatorGUI
         public string Name { get; set; }
         public Brush Brush { get; set; }
         public TimeSpan TimeSpan { get; set; }
-        public bool Finished { get; set; }
+        public bool RaceisFinished { get; set; }
 
         public DisplayTime(IParticipant contestor, int position, bool finished)
         {
@@ -42,11 +42,8 @@ namespace RaceSimulatorGUI
                     break;
             }
             IParticipantData data = Data.Competition.ContestorTime.GetContestorData(contestor);
-            if (data == null)
-                TimeSpan = TimeSpan.Zero;
-            else
-                TimeSpan = ((ParticipantTime)data).Time;
-            Finished = finished;
+            TimeSpan = data == null ? TimeSpan.Zero : ((ParticipantTime)data).Time;
+            RaceisFinished = finished;
             Brush.Freeze();
         }
     }

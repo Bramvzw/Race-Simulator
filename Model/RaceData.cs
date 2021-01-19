@@ -8,37 +8,40 @@ namespace Model
     public class RaceData<T> where T : IParticipantData
     {
 
-        private List<IParticipantData> _list;
+        private List<IParticipantData> ContestorDataList;
 
         public RaceData()
         {
-            _list = new List<IParticipantData>();
+            ContestorDataList = new List<IParticipantData>();
         }
 
         public string GetLeadingContestor()
         {
-            if (_list.Count == 0) return "";
-            return _list[0].GetLeadingContestor(_list);
+            if (ContestorDataList.Count == 0)
+            {
+                return "";
+            }
+            return ContestorDataList[0].GetLeadingContestor(ContestorDataList);
         }
 
-        public IParticipantData GetContestorData(IParticipant participant)
+        public int getSizeList()
         {
-            return _list.FirstOrDefault(data => data.Contestor.Name == participant.Name);
-        }
-
-        public int CountList()
-        {
-            return _list.Count;
+            return ContestorDataList.Count;
         }
 
         public void ClearList()
         {
-            _list.Clear();
+            ContestorDataList.Clear();
         }
 
-        public void AddToList(T item)
+        public IParticipantData GetContestorData(IParticipant participant)
         {
-            item.Assign(_list);
+            return ContestorDataList.FirstOrDefault(data => data.Contestor.Name == participant.Name);
+        }
+
+        public void AssignToList(T item)
+        {
+            item.Assign(ContestorDataList);
         }
     }
 }
