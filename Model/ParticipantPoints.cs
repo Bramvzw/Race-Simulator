@@ -7,7 +7,6 @@ namespace Model
 {
     public class ParticipantPoints : IParticipantData
     {
-
         public string Name { get; set; }
         public IParticipant Contestor { get; set; }
         public int Points { get; set; }

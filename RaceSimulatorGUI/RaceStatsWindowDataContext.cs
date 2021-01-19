@@ -44,9 +44,12 @@ namespace RaceSimulatorGUI
 
         public void OnDriversChanged(object sender, EventArgs e)
         {
-            DetermineRanking(RankingDisplay);
-            DetermineLapTime(LapTimeDisplay);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+            if (LapTimeDisplay != null)
+            {
+                DetermineRanking(RankingDisplay);
+                DetermineLapTime(LapTimeDisplay);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+            }
         }
 
         private List<DisplayRanking> DetermineRanking(List<DisplayRanking> display)

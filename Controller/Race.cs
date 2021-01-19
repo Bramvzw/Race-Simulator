@@ -234,10 +234,15 @@ namespace Controller
                 interval = data.IntervalLeft;
             }
             else
+<<<<<<< HEAD
             {
                 interval = data.IntervalRight;
             }
             interval += (int)Math.Ceiling(speed);
+=======
+                distance = data.DistanceRight;
+            distance += (int)Math.Ceiling(speed);
+>>>>>>> 37ed495c673a7a06982010f6f3c4a05bef66680e
             if (left)
             {
                 data.IntervalLeft = interval;
@@ -266,7 +271,11 @@ namespace Controller
                     Isfinished[contestor] = true;
 
                     // When the contestor has driven enough laps
+<<<<<<< HEAD
                     if (ContHascompletedLaps[contestor] > 2)
+=======
+                    if (_ContHascompletedLaps[contestor] == 1)
+>>>>>>> 37ed495c673a7a06982010f6f3c4a05bef66680e
                     {
                         EndRank.Add(EndRank.Count + 1, contestor);
                         if (left)
@@ -370,7 +379,12 @@ namespace Controller
             return Isfinished[participant];
         }
 
+<<<<<<< HEAD
         private void IniSectionData()
+=======
+        // 
+        public bool AllContestorsFinished()
+>>>>>>> 37ed495c673a7a06982010f6f3c4a05bef66680e
         {
             foreach (Section section in Track.Sections)
             {
@@ -419,6 +433,7 @@ namespace Controller
             int pos = 1;
             for (LinkedListNode<Section> sectionNode = Track.Sections.Last; sectionNode != null; sectionNode = sectionNode.Previous)
             {
+<<<<<<< HEAD
                 Section section = sectionNode.Value;
                 SectionData data = SectionData[section];
                 if (data.Left == null && data.Right == null)
@@ -433,6 +448,15 @@ namespace Controller
                 {
                     RankingContestor.Add(pos, data.Right);
                     pos++;
+=======
+                if (section != null)
+                {
+                    SectionData.Add(section, new SectionData());
+                }
+                else
+                {
+                    DetermineRanking(); 
+>>>>>>> 37ed495c673a7a06982010f6f3c4a05bef66680e
                 }
             }
             GetPassers();

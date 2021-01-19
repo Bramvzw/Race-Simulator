@@ -47,26 +47,49 @@ namespace Controller
         }
 
         // When one race has ended a next track will be dequeud from Tracks
+        public static void NextRace()
+        {
+            CurrentRace?.DisposeEventHandler();
+            Track nextTrack = Competition.NextTrack();
+            if (nextTrack != null)
+            {
+                PutParticipantsInOrderOfFinish();
+                Competition.CleanData();
+                CurrentRace = new Race(nextTrack, Competition.Contestors);
+                CurrentRace.RaceFinished += OnRaceFinished;
+                // When there are no more tracks, it knows that the race has ended
+            }
+            else
+            {
+                CurrentRace = null;
+                if (!Console.IsOutputRedirected) Console.Clear();
+                Console.WriteLine("Race is afgelopen");
+                
+            }
+        }
+
         //public static void NextRace()
         //{
         //    CurrentRace?.DisposeEventHandler();
-        //    Track nextTrack = Competition.NextTrack();
-        //    if (nextTrack != null)
+        //    Track nexttrack = Competition.NextTrack();
+        //    if (nexttrack == null)
         //    {
-        //        PutParticipantsInOrderOfFinish();
-        //        Competition.CleanData();
-        //        CurrentRace = new Race(nextTrack, Competition.Contestors);
-        //        CurrentRace.RaceFinished += OnRaceFinished;
-        //        // When there are no more tracks, it knows that the race has ended
+        //        CurrentRace = null;
+        //        if (!Console.IsOutputRedirected)
+        //        {
+        //            Console.WriteLine($"{Competition.Tracks} is afgelopen");
+        //        }
         //    }
         //    else
         //    {
-        //        CurrentRace = null;
-        //        if (!Console.IsOutputRedirected) Console.Clear();
-        //        Console.WriteLine($"{CurrentRace.Track.Name} is afgelopen");
+        //        PutParticipantsInOrderOfFinish();
+        //        Competition.CleanData();
+        //        CurrentRace = new Race(nexttrack, Competition.Contestors);
+        //        CurrentRace.RaceFinished += OnRaceFinished;
         //    }
         //}
 
+<<<<<<< HEAD
         public static void NextRace()
         {
            CurrentRace?.CleanEventHandler();
@@ -82,6 +105,8 @@ namespace Controller
             CurrentRace.RaceFinished += OnRaceFinished;
         }
 
+=======
+>>>>>>> 37ed495c673a7a06982010f6f3c4a05bef66680e
         // Sets the contestors in order when they have finished in th finalranking dictionary
         public static void PutParticipantsInOrderOfFinish()
         {
