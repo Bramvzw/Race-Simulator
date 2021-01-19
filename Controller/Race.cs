@@ -118,29 +118,8 @@ namespace Controller
             CheckEquipment();
             RepairEquipment();
         }
-
-        // Checks when equipment has broken down and add it to the counter also gives the equipment some damage which can not be lower than 0
-        //private void CheckEquipment()
-        //{
-        //    int number = 10;
-        //    foreach (IParticipant contestors in Contestors)
-        //    {
-        //        if (contestors.Equipment.IsBroken) continue;
-
-        //        if (Random.Next(0, 1000) < number)
-        //        {
-        //            contestors.Equipment.IsBroken = true;
-        //            Data.Competition.ContestorBrokenCount(contestors, 1);
-
-        //            contestors.Equipment.Quality -= 5;
-
-        //            if (contestors.Equipment.Quality <= 0)
-        //            {
-        //                contestors.Equipment.Quality = 0;
-        //            }
-        //        }
-        //    }
-        //}
+        
+      
 
         private void CheckEquipment()
         {
