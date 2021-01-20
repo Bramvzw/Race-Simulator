@@ -6,13 +6,12 @@
         xmlns:local="clr-namespace:RaceSimulatorGUI"
         xmlns:Collections="clr-namespace:System.Collections;assembly=System.Collections.NonGeneric" x:Class="RaceSimulatorGUI.CompetitionStats"
         mc:Ignorable="d"
-        Title="CompetitionStats" Height="450" Width="800">
+        Title="CompetitionStats" Height="300" Width="400">
     <Window.DataContext>
         <local:CompetitionDisplay/>
     </Window.DataContext>
-    <Grid Background="#FF2E2E2E" Margin="0,0,0,0">
-        <GridSplitter HorizontalAlignment="Left" Margin="400,0,0,0" Width="1" Background="#FF515151" />
-        <ListView x:Name="ParticipantPointsListView" Width="400" Margin="0,0,400,0" Background="{x:Null}" ItemsSource="{Binding ParticipantPoints}">
+    <Grid Background="Black" Margin="0,0,0,0">
+        <ListView x:Name="ParticipantPointsListView"   Background="{x:Null}" ItemsSource="{Binding ParticipantPoints}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -20,21 +19,21 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Place" Width="100">
+                    <GridViewColumn Header="Positie" Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Position}" Foreground="{Binding Brush}" HorizontalAlignment="Center" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Name" Width="200">
+                    <GridViewColumn Header="Naam" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}" Foreground="{Binding Brush}" HorizontalAlignment="Center" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Points" Width="auto">
+                    <GridViewColumn Header="Punten" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Points}" Foreground="{Binding Brush}" HorizontalAlignment="Center" />
@@ -44,6 +43,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Force Update" HorizontalAlignment="Left" Margin="500,75,0,0" VerticalAlignment="Top" Height="50" Width="200" Background="#FF313B64" Click="Button_Click"/>
     </Grid>
 </Window>

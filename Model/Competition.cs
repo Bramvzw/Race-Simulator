@@ -29,7 +29,6 @@ namespace Model
             ContestorCountBroken = new RaceData<ParticipantBreakDown>();
             ContestorSectionTime = new RaceData<ParticipantSectionTime>();
             ContestorTime = new RaceData<ParticipantTime>();
-
         }
 
         public void AssignPoints(Dictionary<int, IParticipant> EndPositions)

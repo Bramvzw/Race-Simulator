@@ -48,7 +48,7 @@ namespace RaceSimulatorGUI
             this.TrackImage.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
             {
                 this.TrackImage.Source = null;
-                this.TrackImage.Source = Display.DrawTrack(e1.Track);
+                this.TrackImage.Source = Display.DrawTrack(e1.Track);   
             }));
         }
 

@@ -9,9 +9,9 @@
     <Window.DataContext>
         <local:RaceStatsWindowDataContext/>
     </Window.DataContext>
-    <Grid Background="#FF2E2E2E">
+    <Grid Background="Black">
         <DockPanel>
-            <Menu DockPanel.Dock="Top" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"  Background="#FF464646">
+            <Menu DockPanel.Dock="Top" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"  Background="Gray">
                 <MenuItem Header="Statistieken inzien" FontSize="20" Foreground="White" >
                     <MenuItem x:Name="MenuItemShowRaceStats" Header="Race statistieken" Background="DarkGray" Click="MenuItem_ShowRaceStats_Click"/>
                     <MenuItem x:Name="MenuItemShowCompetitionStats" Header="Competitie statistieken" HorizontalAlignment="Center"  Background="DarkGray" Click="MenuItem_ShowCompetitionStats_Click"/>

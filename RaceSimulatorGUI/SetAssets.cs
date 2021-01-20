@@ -19,17 +19,7 @@ namespace RaceSimulatorGUI
 
 
 
-        public static Bitmap CreateEmptyBitmap(int width, int height)
-        {
-            Bitmap returnValue;
-            if (Image.ContainsKey("empty")) return (Bitmap)LoadImg("empty").Clone();
-            returnValue = new Bitmap(width, height);
-            Graphics graphics = Graphics.FromImage(returnValue);
-            SolidBrush solidBrush = new SolidBrush(System.Drawing.Color.Green);
-            graphics.FillRectangle(solidBrush, 0, 0, width, height);
-            Image.Add("empty", returnValue);
-            return (Bitmap)returnValue.Clone();
-        }
+       
 
         public static Dictionary<string, Bitmap> GetImg()
         {
@@ -85,6 +75,18 @@ namespace RaceSimulatorGUI
             {
                 bitmap.UnlockBits(bitmapData);
             }
+        }
+
+        public static Bitmap CreateEmptyBitmap(int width, int height)
+        {
+            Bitmap returnValue;
+            if (Image.ContainsKey("empty")) return (Bitmap)LoadImg("empty").Clone();
+            returnValue = new Bitmap(width, height);
+            Graphics graphics = Graphics.FromImage(returnValue);
+            SolidBrush solidBrush = new SolidBrush(System.Drawing.Color.Green);
+            graphics.FillRectangle(solidBrush, 0, 0, width, height);
+            Image.Add("empty", returnValue);
+            return (Bitmap)returnValue.Clone();
         }
     }
 }

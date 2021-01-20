@@ -245,7 +245,7 @@ namespace Controller
                     Isfinished[contestor] = true;
 
                     // When the contestor has driven enough laps
-                    if (ContHascompletedLaps[contestor] > 2)
+                    if (ContHascompletedLaps[contestor] == 1)
                     {
                         EndRank.Add(EndRank.Count + 1, contestor);
                         if (left)
@@ -374,7 +374,7 @@ namespace Controller
         // Returns the ranking
         public bool AllContestorsFinished()
         {
-            return RankingContestor.All(rank => rank.Value.Points > 2);
+            return RankingContestor.All(rank => rank.Value.Points == 1);
         }
 
         // Assigns time to contestor for sections

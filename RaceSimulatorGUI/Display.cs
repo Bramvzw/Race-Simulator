@@ -49,6 +49,8 @@ namespace RaceSimulatorGUI
             return assets;
         }
 
+    
+
         // Draw Track
         public static BitmapSource DrawTrack(Track track)
         {
@@ -223,8 +225,8 @@ namespace RaceSimulatorGUI
         {
             int maxX = assets.Max(_square => _square.X);
             int maxY = assets.Max(_square => _square.Y);
-            Bitmap driverBitmap = new Bitmap(trackBitmap);
-            Graphics graphics = Graphics.FromImage(driverBitmap);
+            Bitmap bitmap = new Bitmap(trackBitmap);
+            Graphics graphics = Graphics.FromImage(bitmap);
             for (int y = 0; y <= maxY; y++)
             {
                 for (int x = 0; x <= maxX; x++)
@@ -247,7 +249,7 @@ namespace RaceSimulatorGUI
 
                 }
             }
-            return driverBitmap;
+            return bitmap;
         }
 
         private static Bitmap DrawBaseTrack(Track track)

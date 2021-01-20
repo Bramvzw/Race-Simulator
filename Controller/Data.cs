@@ -44,42 +44,28 @@ namespace Controller
 
             Competition.Tracks.Enqueue(Phoenix_Raceway);
 
+
         }
 
-        // When one race has ended a next track will be dequeud from Tracks
-        //public static void NextRace()
-        //{
-        //    CurrentRace?.DisposeEventHandler();
-        //    Track nextTrack = Competition.NextTrack();
-        //    if (nextTrack != null)
-        //    {
-        //        PutParticipantsInOrderOfFinish();
-        //        Competition.CleanData();
-        //        CurrentRace = new Race(nextTrack, Competition.Contestors);
-        //        CurrentRace.RaceFinished += OnRaceFinished;
-        //        // When there are no more tracks, it knows that the race has ended
-        //    }
-        //    else
-        //    {
-        //        CurrentRace = null;
-        //        if (!Console.IsOutputRedirected) Console.Clear();
-        //        Console.WriteLine($"{CurrentRace.Track.Name} is afgelopen");
-        //    }
-        //}
+      
 
         public static void NextRace()
         {
-           CurrentRace?.CleanEventHandler();
-            Track nexttrack = Competition.NextTrack();
-            if (nexttrack == null)
-                CurrentRace = null;
-            if (!Console.IsOutputRedirected)
-                Console.WriteLine($"{Competition.Tracks} is afgelopen");
-            else
+            CurrentRace?.CleanEventHandler();
+            Track nextTrack = Competition.NextTrack();
+            if (nextTrack != null)
+            {
                 PutParticipantsInOrderOfFinish();
-            Competition.CleanData();
-            CurrentRace = new Race(nexttrack, Competition.Contestors);
-            CurrentRace.RaceFinished += OnRaceFinished;
+                Competition.CleanData();
+                CurrentRace = new Race(nextTrack, Competition.Contestors);
+                CurrentRace.RaceFinished += OnRaceFinished;
+            }
+            else
+            {
+                CurrentRace = null;
+                if (!Console.IsOutputRedirected) Console.Clear();
+                Console.WriteLine($"Race is afgelopen!");
+            }
         }
 
         // Sets the contestors in order when they have finished in th finalranking dictionary

@@ -9,7 +9,7 @@
     <Window.DataContext>
         <local:RaceStatsWindowDataContext/>
     </Window.DataContext>
-    <Grid Background="#FF2E2E2E">
+    <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
@@ -67,13 +67,6 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name, Mode=OneWay}" Foreground="{Binding Brush, Mode=OneWay}" HorizontalAlignment="Center" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Gefinished" Width="125">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Finished, Mode=OneWay}" Foreground="{Binding Brush, Mode=OneWay}" HorizontalAlignment="Center" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
