@@ -42,7 +42,7 @@ namespace RaceSimulatorGUI
                     break;
             }
             IParticipantData data = Data.Competition.ContestorTime.GetContestorData(contestor);
-            TimeSpan = data == null ? TimeSpan.Zero : ((ParticipantTime)data).Time;
+            TimeSpan = ((ParticipantTime) data)?.Time ?? TimeSpan.Zero;
             RaceisFinished = finished;
             Brush.Freeze();
         }

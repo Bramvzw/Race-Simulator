@@ -7,7 +7,7 @@ using System.Text;
 namespace Tests.Model
 {
     [TestFixture]
-    public class Model_Driver
+    public class Model_DriverData
     {
 
         Driver d1, d2;

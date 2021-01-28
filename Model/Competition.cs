@@ -8,7 +8,6 @@ namespace Model
 {
     public class Competition
     {
-
         public List<IParticipant> Contestors { get; set; }
         public RaceData<ParticipantBreakDown> ContestorCountBroken { get; set; }
         public Queue<Track> Tracks { get; set; }
@@ -16,9 +15,6 @@ namespace Model
         public RaceData<ParticipantTime> ContestorTime { get; set; }
         public RaceData<ParticipantSectionTime> ContestorSectionTime { get; set; }
         public RaceData<ParticipantPoints> ContestorPoints { get; set; }
-
-
-       
 
         public Competition()
         {
@@ -65,7 +61,7 @@ namespace Model
                     new ParticipantPoints()
                     {
                         Name = EndPositions[i].Name,
-                        Points = points,
+                        points = points,
                         Contestor = contestor
                     });
                 Debug.WriteLine($"{EndPositions[i].Name} heeft {points} punten toegewezen gekregen daarmee heeft deze deelnemer nu {contestor.Points} punten");
@@ -90,7 +86,6 @@ namespace Model
         {
             ContestorSectionTime.AssignToList(new ParticipantSectionTime()
             {
-
                 Name = contestor.Name,
                 Section = section,
                 Time = time,
@@ -107,7 +102,7 @@ namespace Model
 
         public Track NextTrack()
         {
-            Track returnTrack = null;
+            Track returnTrack;
             Tracks.TryDequeue(out returnTrack);
             return returnTrack;
         }

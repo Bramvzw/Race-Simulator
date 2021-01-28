@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static System.Int32;
 
 namespace Model
 {
     public class ParticipantsPassing : IParticipantData
     {
-
         public string PassedName { get; set; }
         public int Count { get; set; }
         public string PasserName { get; set; }
-
         public IParticipant Contestor { get; set; }
 
         public ParticipantsPassing(string PasserName, string PassedName)
@@ -24,7 +23,15 @@ namespace Model
         public void Assign(List<IParticipantData> participantData)
         {
             IEnumerable<ParticipantsPassing> overtakenData = participantData.Cast<ParticipantsPassing>();
-            ParticipantsPassing participant = overtakenData.FirstOrDefault(data => data.PasserName == this.PasserName);
+            ParticipantsPassing participant = null;
+            foreach (var data in overtakenData)
+            {
+                if (data.PasserName == this.PasserName)
+                {
+                    participant = data;
+                    break;
+                }
+            }
             if (participant != null)
             {
                 participant.Count++;
@@ -40,7 +47,7 @@ namespace Model
         public string GetLeadingContestor(List<IParticipantData> participantData)
         {
             IEnumerable<ParticipantsPassing> overtakenData = participantData.Cast<ParticipantsPassing>();
-            int maxOvertaken = int.MaxValue;
+            int maxOvertaken = MaxValue;
             string bestParticipant = "";
             foreach (ParticipantsPassing overtaken in overtakenData)
             {

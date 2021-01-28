@@ -11,22 +11,11 @@ namespace Controller
         public static Competition Competition { get; set; }
         public static Race CurrentRace { get; set; }
 
-        public static void Initialise(Competition competition)
+        public static void Initialize(Competition competition)
         {
             Competition = competition;
-            AddContestors();
             AddTracks();
-        }
-
-
-        // Creates new Contestors with Data and adds cars to the contestors
-        static void AddContestors()
-        {
-            Competition.Contestors.Add(new Driver("Byron", new Car()) { TeamColour = TeamColours.Red });
-            Competition.Contestors.Add(new Driver("Harvick", new Car()) { TeamColour = TeamColours.Green });
-            Competition.Contestors.Add(new Driver("Dillon", new Car()) { TeamColour = TeamColours.Blue });
-            Competition.Contestors.Add(new Driver("Custer", new Car()) { TeamColour = TeamColours.Yellow });
-            Competition.Contestors.Add(new Driver("Larson", new Car()) { TeamColour = TeamColours.Orange });
+            AddContestors();
         }
 
         // Creates Tracks for the contestorts to drive on
@@ -44,50 +33,55 @@ namespace Controller
 
             Competition.Tracks.Enqueue(Phoenix_Raceway);
 
-
         }
 
-      
+        // Creates new Contestors with Data and adds cars to the contestors
+        static void AddContestors()
+        {
+            Competition.Contestors.Add(new Driver("Byron", new Car()) { TeamColour = TeamColours.Red });
+            Competition.Contestors.Add(new Driver("Harvick", new Car()) { TeamColour = TeamColours.Green });
+            Competition.Contestors.Add(new Driver("Dillon", new Car()) { TeamColour = TeamColours.Blue });
+            Competition.Contestors.Add(new Driver("Custer", new Car()) { TeamColour = TeamColours.Yellow });
+            Competition.Contestors.Add(new Driver("Larson", new Car()) { TeamColour = TeamColours.Orange });
+        }
 
+        // loads new Race if it's still in the queue else the race has comes to an end!
         public static void NextRace()
         {
             CurrentRace?.CleanEventHandler();
             Track nextTrack = Competition.NextTrack();
-            if (nextTrack != null)
+            if (nextTrack == null)
+            {
+                CurrentRace = null;
+                if (!Console.IsOutputRedirected) Console.Clear();
+                Console.WriteLine($"Race is afgelopen!");
+            }
+            else
             {
                 PutParticipantsInOrderOfFinish();
                 Competition.CleanData();
                 CurrentRace = new Race(nextTrack, Competition.Contestors);
                 CurrentRace.RaceFinished += OnRaceFinished;
             }
-            else
-            {
-                CurrentRace = null;
-                if (!Console.IsOutputRedirected) Console.Clear();
-                Console.WriteLine($"Race is afgelopen!");
-            }
         }
 
-        // Sets the contestors in order when they have finished in th finalranking dictionary
+        // Sets the contestors in order when they have finished in the final ranking dictionary
         public static void PutParticipantsInOrderOfFinish()
         {
             if (CurrentRace == null)
             {
                 return;
             }
-            else
+            Competition.Contestors.Clear();
+            Dictionary<int, IParticipant> finalRanking = CurrentRace.GetFinalRanking();
+            for (int i = 1; i <= finalRanking.Count; i++)
             {
-                Competition.Contestors.Clear();
-                Dictionary<int, IParticipant> finalRanking = CurrentRace.GetFinalRanking();
-                for (int i = 1; i <= finalRanking.Count; i++)
-                {
-                    Competition.Contestors.Add(finalRanking[i]);
-                }
+                Competition.Contestors.Add(finalRanking[i]);
             }
+
         }
 
-
-        // Assign points to the contestor and initiates nextrace
+        // Assign points to the contestor
         public static void OnRaceFinished(object sender, EventArgs e)
         {
             Competition.AssignPoints(CurrentRace.GetFinalRanking());

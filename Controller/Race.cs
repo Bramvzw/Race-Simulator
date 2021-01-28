@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using static System.IntPtr;
+using static System.TimeSpan;
+using static Controller.Data;
 
 namespace Controller
 {
@@ -56,21 +59,25 @@ namespace Controller
             Start();
         }
 
-
-
+        private void Start()
+        {
+            RaceStarted?.Invoke(this, new RaceStartedEventArgs() { Race = this });
+            timer.Start();
+        }
 
         // Dictionaries will be filled with the use of this function
         private void Dictionaries()
         {
-            foreach (IParticipant contestor in Contestors)
+            for (var i = 0; i < Contestors.Count; i++)
             {
-                sectionTime.Add(contestor, DateTime.Now);
+                IParticipant contestor = Contestors[i];
                 sectionTimeContestor.Add(contestor, TimeSpan.Zero);
+                sectionTime.Add(contestor, DateTime.Now);
                 lapTime.Add(contestor, DateTime.Now);
             }
         }
 
-
+        // Reset eventhandlers to null
         public void CleanEventHandler()
         {
             DriversChanged = null;
@@ -93,11 +100,11 @@ namespace Controller
         // Gives the equipment of the contestors random qualifications
         private void RandomizeEquipment()
         {
-            Contestors.ForEach(_participant =>
+            Contestors.ForEach(contestor =>
             {
-                _participant.Equipment.Speed = random.Next(7, 13);
-                _participant.Equipment.Performance = random.Next(6, 13);
-                _participant.Equipment.Quality = random.Next(74, 100) + 1;
+                contestor.Equipment.Speed = random.Next(5, 10);
+                contestor.Equipment.Performance = random.Next(5, 10);
+                contestor.Equipment.Quality = random.Next(75, 110) + 2;
             });
         }
 
@@ -112,28 +119,34 @@ namespace Controller
 
         }
 
+        // Combines function
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             ContestorData(e.SignalTime);
             CheckEquipment();
             RepairEquipment();
         }
-        
-      
 
+        // Can cause a car to crash
         private void CheckEquipment()
         {
             int number = 10;
             foreach (IParticipant contestor in Contestors)
             {
                 if (contestor.Equipment.Broken) continue;
-                if (random.Next(0, 1000) < number)
+                if (random.Next(0, 1200) < number)
                 {
                     contestor.Equipment.Broken = true;
                     Data.Competition.ContestorBrokenCount(contestor, 1);
                     contestor.Equipment.Quality -= 5;
-                    if (contestor.Equipment.Quality < 0)
-                        contestor.Equipment.Quality = 0;
+                    switch (contestor.Equipment.Quality >= 0)
+                    {
+                        case true:
+                            continue;
+                        default:
+                            contestor.Equipment.Quality = 0;
+                            break;
+                    }
                 }
             }
         }
@@ -142,19 +155,10 @@ namespace Controller
         private void RepairEquipment()
         {
             int number = 20;
-            foreach (IParticipant participant in Contestors)
+            foreach (var contestor in Contestors.Where(contestor => contestor.Equipment.Broken))
             {
-                if (!participant.Equipment.Broken) continue;
-
-                participant.Equipment.Broken = !(random.Next(0, 100) < number);
+                contestor.Equipment.Broken = !(random.Next(0, 120) < number);
             }
-
-        }
-
-        private void Start()
-        {
-            RaceStarted?.Invoke(this, new RaceStartedEventArgs() { Race = this });
-            timer.Start();
         }
 
         // If the Contestor has finished one lap it's name will be added to the completed laps dictionary else it adds to the counter
@@ -177,15 +181,27 @@ namespace Controller
 
         public int GetRankingOfParticipant(IParticipant participant)
         {
-            return RankingContestor.FirstOrDefault(p => p.Value.Name == participant.Name).Key;
-        }
+            KeyValuePair<int, IParticipant> first = new KeyValuePair<int, IParticipant>();
+            foreach (var p in RankingContestor)
+            {
+                if (p.Value.Name == participant.Name)
+                {
+                    first = p;
+                    break;
+                }
+            }
 
+            return first.Key;
+        }
+        
+
+        // returns the endranking dict
         public Dictionary<int, IParticipant> GetFinalRanking()
         {
             return EndRank;
         }
 
-
+        // saves the finalranking to the endranking dict
         public void SetFinalRanking(Dictionary<int, IParticipant> finalRanking)
         {
             EndRank = finalRanking;
@@ -208,33 +224,18 @@ namespace Controller
             bool corner = CheckCorner(section);
             int interval;
             // Calculates the distance
-            if (left)
-            {
-                interval = data.IntervalLeft;
-            }
-            else
-            {
-                interval = data.IntervalRight;
-            }
+            if (left) interval = data.IntervalLeft;
+            else interval = data.IntervalRight;
+
             interval += (int)Math.Ceiling(speed);
-            if (left)
-            {
-                data.IntervalLeft = interval;
-            }
-            else
-            {
-                data.IntervalRight = interval;
-            }
+
+            if (left) data.IntervalLeft = interval;
+            else data.IntervalRight = interval;
 
             int outCorner;
-            if (corner && !InsCorner)
-            {
-                outCorner = 70;
-            }
-            else
-            {
-                outCorner = 0;
-            }
+            if (corner && !InsCorner) outCorner = 70;
+            else outCorner = 0;
+
             // when te distance is higher than the length of the section minus the corner 
             if (interval >= (sectionlength - outCorner) || (InsCorner && interval >= cornerlength))
             {
@@ -276,14 +277,8 @@ namespace Controller
                     AssertTimeToContestor(contestor, time);
                     return false;
                 }
-                if (left)
-                {
-                    data.Left = null;
-                }
-                else
-                {
-                    data.Right = null;
-                }
+                if (left) data.Left = null;
+                else data.Right = null;
                 // Section time is saved and cleaned
                 SaveSectionTime(contestor, section);
                 CleanTime(contestor, time);
@@ -298,10 +293,10 @@ namespace Controller
         }
 
         // set cache to time and currenttime to zero
-        private void CleanTime(IParticipant participant, DateTime time)
+        private void CleanTime(IParticipant contestor, DateTime time)
         {
-            sectionTime[participant] = time;
-            sectionTimeContestor[participant] = TimeSpan.Zero;
+            sectionTimeContestor[contestor] = TimeSpan.Zero;
+            sectionTime[contestor] = time;
         }
 
         public void ContestorData(DateTime time)
@@ -312,17 +307,21 @@ namespace Controller
                 if (RankingContestor[i].Equipment.Broken) continue;
                 // Retrieves data from section using order of partipants
                 var data = GetContestorSectionData(RankingContestor[i]);
-                if (data == null)
-                    continue;
-                // calculates the speed of a contestor by equipment_speed * equipment_performace * equipment_quality
-                float speed = (RankingContestor[i].Equipment.Speed * RankingContestor[i].Equipment.Performance) * (RankingContestor[i].Equipment.Quality * (float)Math.Sqrt(RankingContestor[i].Equipment.Quality) / 1000f) + 10f;
-                var section = GetSectionBySectionData(data);
+                if (data != null)
+                {
+                    // calculates the speed of a contestor by equipment_speed * equipment_performace * equipment_quality
+                    float speed = (RankingContestor[i].Equipment.Speed * RankingContestor[i].Equipment.Performance) *
+                        (RankingContestor[i].Equipment.Quality *
+                            (float) Math.Sqrt(RankingContestor[i].Equipment.Quality) / 1000f) + 10f;
+                    var section = GetSectionBySectionData(data);
 
-                //
-                bool isLeft = data.Left == RankingContestor[i];
-                bool driversChangedTemp = MoveParticipants(RankingContestor[i], data, speed, isLeft,
-                    isLeft && section.SectionType == SectionTypes.LeftCorner, section, time);
-                driversChanged = driversChangedTemp || driversChanged;
+                    //
+                    bool isLeft = data.Left == RankingContestor[i];
+                    bool driversChangedTemp = MoveParticipants(RankingContestor[i], data, speed, isLeft,
+                        isLeft && section.SectionType == SectionTypes.LeftCorner, section, time);
+                    driversChanged = driversChangedTemp || driversChanged;
+                }
+
             }
 
 
@@ -336,12 +335,14 @@ namespace Controller
                 Ranking = new Dictionary<int, IParticipant>(RankingContestor);
                 GetRankingContestors();
                 if (GetConsoleWindow() != IntPtr.Zero)
-                    DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = Track });
+                    if (DriversChanged != null)
+                    {
+                        DriversChanged?.Invoke(this, new DriversChangedEventArgs() {Track = Track});
+                    }
             }
-            if (GetConsoleWindow() == IntPtr.Zero)
-            {
-                DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = Track });
-            }
+
+            if (GetConsoleWindow() != IntPtr.Zero) return;
+            DriversChanged?.Invoke(this, new DriversChangedEventArgs() { Track = Track });
         }
 
         public bool GetFinishedContestors(IParticipant participant)
@@ -353,7 +354,10 @@ namespace Controller
         {
             foreach (Section section in Track.Sections)
             {
-                SectionData.Add(section, new SectionData());
+                if (SectionData != null)
+                {
+                    SectionData.Add(section, new SectionData());
+                }
             }
         }
 
@@ -365,29 +369,37 @@ namespace Controller
 
 
 
-        // lap time cache is updated
+        // lap time is updated
         private void UpdateLapTime(IParticipant participant, DateTime time)
         {
-            lapTime[participant] = time;
+            if (lapTime.ContainsKey(participant)) lapTime[participant] = time;
         }
 
         // Returns the ranking
         public bool AllContestorsFinished()
         {
-            return RankingContestor.All(rank => rank.Value.Points == 1);
+            foreach (var rank in RankingContestor)
+            {
+                if (rank.Value.Points != 3) return false;
+            }
+
+            return true;
         }
 
         // Assigns time to contestor for sections
         private void AssertTimeToContestor(IParticipant participant, DateTime time)
         {
-            DateTime cache = sectionTime[participant];
+            DateTime cache;
+            cache = sectionTime[participant];
+            if (sectionTimeContestor == null) return;
             sectionTimeContestor[participant] = time - cache;
         }
 
         // Assigns time to contestor for a lap
         private void AssertLapTimeToContestor(IParticipant participant, DateTime time)
         {
-            DateTime cache = lapTime[participant];
+            DateTime cache;
+            cache = lapTime[participant];
             Data.Competition.AddLapTime(participant, Track, time - cache);
         }
 
@@ -398,8 +410,10 @@ namespace Controller
             int pos = 1;
             for (LinkedListNode<Section> sectionNode = Track.Sections.Last; sectionNode != null; sectionNode = sectionNode.Previous)
             {
-                Section section = sectionNode.Value;
-                SectionData data = SectionData[section];
+                Section section;
+                section = sectionNode.Value;
+                SectionData data;
+                data = SectionData[section];
                 if (data.Left == null && data.Right == null)
                     continue;
                 if (data.Left != null)
@@ -452,16 +466,36 @@ namespace Controller
             return returnValue;
         }
 
-
-
         private void GetPassers()
         {
             for (int i = 1; i <= RankingContestor.Count; i++)
             {
-                if (!Ranking.ContainsKey(i)) continue;
-                if (RankingContestor[i] == Ranking[i]) continue;
-                int prevPosition = Ranking.FirstOrDefault(x => x.Value == RankingContestor[i]).Key;
-                if (prevPosition > i) continue;
+                if (!Ranking.ContainsKey(i))
+                {
+                    continue;
+                }
+
+                if (RankingContestor[i] == Ranking[i])
+                {
+                    continue;
+                }
+
+                KeyValuePair<int, IParticipant> first = new KeyValuePair<int, IParticipant>();
+                foreach (var x in Ranking)
+                {
+                    if (x.Value == RankingContestor[i])
+                    {
+                        first = x;
+                        break;
+                    }
+                }
+
+                int prevPosition = first.Key;
+                if (prevPosition > i)
+                {
+                    continue;
+                }
+
                 Data.Competition.ContestorPassed(RankingContestor[i], Ranking[i]);
             }
         }
@@ -482,18 +516,20 @@ namespace Controller
                 throw new Exception("Een track moet beginnen met een Startsection");
             for (var node = startNode; node != null; node = node.Next)
             {
-                if (node.Value.SectionType == SectionTypes.StartGrid)
+                if (node.Value.SectionType != SectionTypes.StartGrid)
                 {
-                    bool isStart = true;
-                    if (isStart)
-                    {
-                        secDict.Add(counter, node.Value);
-                        counter--;
-                    }
-                    else
-                    {
-                        counter++;
-                    }
+                    continue;
+                }
+
+                bool isStart = node.Value.SectionType == SectionTypes.StartGrid;
+                if (isStart)
+                {
+                    secDict.Add(counter, node.Value);
+                    counter--;
+                }
+                else
+                {
+                    counter++;
                 }
             }
 
@@ -501,16 +537,25 @@ namespace Controller
 
             for (int i = 0; i < startSections.Count; i++)
             {
-                SectionData sectionData = GetSectionData(startSections[i]);
+                SectionData sectionData;
+                sectionData = GetSectionData(startSections[i]);
                 for (int j = 2 * i; j <= 2 * i + 1; j++)
                 {
-                    if (j >= Contestors.Count) break;
+                    if (j >= Contestors.Count)
+                    {
+                        break;
+                    }
+
                     RankingContestor.Add(j + 1, Contestors[j]);
                     Isfinished.Add(Contestors[j], false);
                     if (j % 2 == 0)
+                    {
                         sectionData.Left = Contestors[j];
+                    }
                     else
+                    {
                         sectionData.Right = Contestors[j];
+                    }
                 }
             }
         }

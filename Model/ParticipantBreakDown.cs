@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static System.Int32;
 
 namespace Model
 {
@@ -28,11 +28,12 @@ namespace Model
         // Returns the contestor that has the most times brokendown
         public string GetLeadingContestor(List<IParticipantData> participantData)
         {
-            var BrokenDownParticipantData = participantData.Cast<ParticipantBreakDown>().ToList();
-            // Sets max value to 'maxPoints' times brokendown will never be more than that :)
-            int maxPoints = Int32.MaxValue;
+            List<ParticipantBreakDown> brokenDownParticipantData = new List<ParticipantBreakDown>();
+            foreach (ParticipantBreakDown down in participantData) brokenDownParticipantData.Add(down);
+            // Sets max value to 'maxPoints' times broken down will never be more than that :)
+            int maxPoints = MaxValue;
             string bestParticipant = "";
-            foreach (ParticipantBreakDown brokenDown in BrokenDownParticipantData)
+            foreach (ParticipantBreakDown brokenDown in brokenDownParticipantData)
             {
                 if (brokenDown.Count < maxPoints)
                 {

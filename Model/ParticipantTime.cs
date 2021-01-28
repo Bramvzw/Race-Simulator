@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static System.TimeSpan;
 
 namespace Model
 {
@@ -15,7 +16,15 @@ namespace Model
         public virtual void Assign(List<IParticipantData> participantData)
         {
             var timeData = participantData.Cast<ParticipantTime>();
-            var participant = timeData.FirstOrDefault(data => data.Name == Name && data.Track?.Name == Track?.Name);
+            ParticipantTime participant = null;
+            foreach (var data in timeData)
+            {
+                if (data.Name == Name && data.Track?.Name == Track?.Name)
+                {
+                    participant = data;
+                    break;
+                }
+            }
             if (participant == null)
             {
                 participantData.Add(this);
@@ -31,13 +40,18 @@ namespace Model
         public string GetLeadingContestor(List<IParticipantData> participantData)
         {
             IEnumerable<ParticipantTime> timeData = participantData.Cast<ParticipantTime>();
-            TimeSpan maxTime = TimeSpan.MaxValue;
+            TimeSpan maxTime;
+            maxTime = MaxValue;
             string bestParticipant = "";
             foreach (ParticipantTime time in timeData)
             {
-                if (time.Track?.Name != Track?.Name) continue;
+                if (time.Track?.Name != Track?.Name)
+                {
+                    continue;
+                }
+
                 // When the difference between t1 and t2 is lower then zero maxtime is new t1 and best is new p1
-                if (TimeSpan.Compare(time.Time, maxTime) < 0)
+                if (Compare(time.Time, maxTime) < 0)
                 {
                     maxTime = time.Time;
                     bestParticipant = time.Name;

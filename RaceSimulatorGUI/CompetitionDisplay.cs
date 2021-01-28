@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using static Controller.Data;
+using static Controller.Race;
 
 namespace RaceSimulatorGUI
 {
@@ -14,10 +16,10 @@ namespace RaceSimulatorGUI
         {
             ParticipantPoints = new List<DisplayPoints>();
             DetermineRanking();
-            Race.RaceStarted += StartedRace;
-            if (Data.CurrentRace != null)
+            RaceStarted += StartedRace;
+            if (CurrentRace != null)
             {
-                Data.CurrentRace.RaceFinished += FinishedRace;
+                CurrentRace.RaceFinished += FinishedRace;
             }
         }
 
@@ -48,8 +50,8 @@ namespace RaceSimulatorGUI
         private void DetermineRanking()
         {
             ParticipantPoints.Clear();
-            Data.Competition.Contestors.ForEach(participant => ParticipantPoints.Add(new DisplayPoints(participant, ParticipantPoints.Count + 1)));
-            ParticipantPoints = ParticipantPoints.OrderByDescending(p => p.Points).ToList();
+            Competition.Contestors.ForEach(participant => ParticipantPoints.Add(new DisplayPoints(participant, ParticipantPoints.Count + 1)));
+            ParticipantPoints = ParticipantPoints.OrderByDescending(p => p.points).ToList();
             for (int i = 1; i <= ParticipantPoints.Count; i++)
             {
                 ParticipantPoints[i - 1].Position = i;

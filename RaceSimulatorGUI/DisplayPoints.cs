@@ -14,14 +14,14 @@ namespace RaceSimulatorGUI
         public int Position { get; set; }
         public string Name { get; set; }
         public Brush Brush { get; set; }
-        public int Points { get; set; }
+        public int points { get; set; }
 
-        public DisplayPoints(IParticipant participant, int place)
+        public DisplayPoints(IParticipant contestor, int position)
         {
-            Contestor = participant;
-            Position = place;
-            Name = participant.Name;
-            switch (participant.TeamColour)
+            Contestor = contestor;
+            Position = position;
+            Name = contestor.Name;
+            switch (contestor.TeamColour)
             {
                 case TeamColours.Orange:
                     Brush = new SolidColorBrush(Color.FromRgb(245, 63, 39));
@@ -40,11 +40,11 @@ namespace RaceSimulatorGUI
                     Brush = new SolidColorBrush(Color.FromRgb(255, 15, 15));
                     break;
             }
-            IParticipantData data = Data.Competition.ContestorPoints.GetContestorData(participant);
-            if (data == null)
-                Points = 0;
+            IParticipantData contestorData = Data.Competition.ContestorPoints.GetContestorData(contestor);
+            if (contestorData == null)
+                points = 0;
             else
-                Points = ((ParticipantPoints)data).Points;
+                points = ((ParticipantPoints)contestorData).points;
             Brush.Freeze();
         }
     }

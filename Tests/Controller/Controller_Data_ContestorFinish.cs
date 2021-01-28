@@ -8,14 +8,13 @@ namespace ControllerTest
     [TestFixture]
     public class Controller_Data_ParticipantsOrderFinish
     {
-
         private Competition _competition;
 
         [SetUp]
         public void Setup()
         {
             _competition = new Competition();
-            Data.Initialise(_competition);
+            Data.Initialize(_competition);
         }
 
         [Test]

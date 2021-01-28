@@ -31,7 +31,7 @@ namespace ControllerTest
         [Test]
         public void AddItem_ListShouldContainThatItem()
         {
-            var points = new ParticipantPoints() { Name = "Test1", Points = 5, Contestor = _participants[0] };
+            var points = new ParticipantPoints() { Name = "Test1", points = 5, Contestor = _participants[0] };
             var time = new ParticipantTime() { Name = "Test1", Time = DateTime.Now.TimeOfDay, Contestor = _participants[0] };
             var sectionTime = new ParticipantSectionTime()
             {
@@ -63,8 +63,8 @@ namespace ControllerTest
         [Test]
         public void BestParticipant_Points()
         {
-            var expected = new ParticipantPoints() { Name = "Test1", Points = 5, Contestor = _participants[0] };
-            var test = new ParticipantPoints() { Name = "Test2", Points = 3, Contestor = _participants[1] };
+            var expected = new ParticipantPoints() { Name = "Test1", points = 5, Contestor = _participants[0] };
+            var test = new ParticipantPoints() { Name = "Test2", points = 3, Contestor = _participants[1] };
             _participantPoints.AssignToList(expected);
             _participantPoints.AssignToList(test);
             var actual = _participantPoints.GetLeadingContestor();

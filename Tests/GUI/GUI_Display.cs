@@ -4,7 +4,7 @@ using RaceSimulatorGUI;
 namespace ControllerTest.GUI
 {
     [TestFixture]
-    public class GUI_Visualiser
+    public class GUI_Display
     {
 
         [SetUp]

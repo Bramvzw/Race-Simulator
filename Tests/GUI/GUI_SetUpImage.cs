@@ -6,7 +6,7 @@ using RaceSimulatorGUI;
 namespace ControllerTest.GUI
 {
     [TestFixture]
-    public class GUI_ImageLoader
+    public class GUI_SetUpImage
     {
 
         [SetUp]

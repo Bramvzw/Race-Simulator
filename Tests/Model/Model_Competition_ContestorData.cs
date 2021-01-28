@@ -7,7 +7,7 @@ namespace ControllerTest
 {
 
     [TestFixture]
-    public class Model_Competition_AddingParticipantData
+    public class Model_Competition_ContestorData
     {
 
         private Competition _competition;

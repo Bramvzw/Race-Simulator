@@ -8,13 +8,21 @@ namespace Model
 {
     public class ParticipantSectionTime : ParticipantTime
     {
-
         public Section Section { get; set; }
 
         public override void Assign(List<IParticipantData> participantData)
         {
             IEnumerable<ParticipantSectionTime> sectionTimeData = participantData.Cast<ParticipantSectionTime>();
-            ParticipantSectionTime participant = sectionTimeData.FirstOrDefault(data => data.Contestor.Name == Name && data.Section == Section);
+            ParticipantSectionTime participant = null;
+            foreach (var data in sectionTimeData)
+            {
+                if (data.Contestor.Name == Name && data.Section == Section)
+                {
+                    participant = data;
+                    break;
+                }
+            }
+
             if (participant != null)
             {
                 participant.Time = Time;

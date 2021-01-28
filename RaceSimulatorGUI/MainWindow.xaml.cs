@@ -31,7 +31,7 @@ namespace RaceSimulatorGUI
 
         public MainWindow()
         {
-            Data.Initialise(new Competition());
+            Data.Initialize(new Competition());
             Race.RaceStarted += OnRaceStarted;
             Data.NextRace();
             Display.Initialise();
@@ -48,7 +48,7 @@ namespace RaceSimulatorGUI
             this.TrackImage.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
             {
                 this.TrackImage.Source = null;
-                this.TrackImage.Source = Display.DrawTrack(e1.Track);   
+                this.TrackImage.Source = Display.DrawTrack(e1.Track);
             }));
         }
 

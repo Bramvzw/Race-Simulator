@@ -17,16 +17,10 @@ namespace RaceSimulatorGUI
             Image = new Dictionary<string, Bitmap>();
         }
 
-
-
-       
-
         public static Dictionary<string, Bitmap> GetImg()
         {
             return Image;
         }
-
-
 
         public static Bitmap LoadImg(string imgUrl)
         {

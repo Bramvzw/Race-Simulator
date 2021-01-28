@@ -16,12 +16,12 @@ namespace RaceSimulatorGUI
         public Brush Brush { get; set; }
         public bool RaceisFinished { get; set; }
 
-        public DisplayRanking(IParticipant participant, int place, bool finished)
+        public DisplayRanking(IParticipant contestor, int position, bool finished)
         {
-            Contestor = participant;
-            Position = place;
-            Name = participant.Name;
-            switch (participant.TeamColour)
+            Contestor = contestor;
+            Position = position;
+            Name = contestor.Name;
+            switch (contestor.TeamColour)
             {
                 case TeamColours.Orange:
                     Brush = new SolidColorBrush(Color.FromRgb(245, 63, 39));

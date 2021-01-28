@@ -49,13 +49,13 @@ namespace RaceSimulatorGUI
             return assets;
         }
 
-    
+
 
         // Draw Track
         public static BitmapSource DrawTrack(Track track)
         {
             Bitmap Track = DrawBaseTrack(track);
-            Bitmap Driver = DrawParticipants(Track);
+            Bitmap Driver = DisplayParticipants(Track);
             return SetAssets.CreateBitmapSourceFromGdiBitmap(Driver);
         }
 
@@ -221,10 +221,10 @@ namespace RaceSimulatorGUI
             return 0;
         }
 
-        private static Bitmap DrawParticipants(Bitmap trackBitmap)
+        private static Bitmap DisplayParticipants(Bitmap trackBitmap)
         {
-            int maxX = assets.Max(_square => _square.X);
-            int maxY = assets.Max(_square => _square.Y);
+            int maxX = Enumerable.Max(assets, square => square.X);
+            int maxY = assets.Max(square => square.Y);
             Bitmap bitmap = new Bitmap(trackBitmap);
             Graphics graphics = Graphics.FromImage(bitmap);
             for (int y = 0; y <= maxY; y++)
@@ -232,21 +232,27 @@ namespace RaceSimulatorGUI
                 for (int x = 0; x <= maxX; x++)
                 {
                     SetIMG square = AddGridSquare(x, y);
-                    if (square?.SectionData.Left == null && square?.SectionData.Right == null) continue;
-                    Bitmap car = null;
-                    if (square.SectionData.Left != null)
+                    if (square?.SectionData.Left != null || square?.SectionData.Right != null)
                     {
-                        IParticipant participant = square.SectionData.Left;
-                        car = GetParticipantImage(participant, square.Direction);
-                        graphics.DrawImage(car, x * 239 + GetXOffset(true, square.Direction, square.SectionData.IntervalLeft), y * 239 + GetYOffset(true, square.Direction, square.SectionData.IntervalLeft));
-                    }
-                    if (square.SectionData.Right != null)
-                    {
-                        IParticipant participant = square.SectionData.Right;
-                        car = GetParticipantImage(participant, square.Direction);
-                        graphics.DrawImage(car, x * 239 + GetXOffset(false, square.Direction, square.SectionData.IntervalRight), y * 239 + GetYOffset(false, square.Direction, square.SectionData.IntervalRight));
-                    }
+                        Bitmap car = null;
+                        if (square.SectionData.Left != null)
+                        {
+                            IParticipant participant = square.SectionData.Left;
+                            car = GetParticipantImage(participant, square.Direction);
+                            graphics.DrawImage(car,
+                                x * 239 + GetXOffset(true, square.Direction, square.SectionData.IntervalLeft),
+                                y * 239 + GetYOffset(true, square.Direction, square.SectionData.IntervalLeft));
+                        }
 
+                        if (square.SectionData.Right == null) continue;
+                        {
+                            IParticipant participant = square.SectionData.Right;
+                            car = GetParticipantImage(participant, square.Direction);
+                            graphics.DrawImage(car,
+                                x * 239 + GetXOffset(false, square.Direction, square.SectionData.IntervalRight),
+                                y * 239 + GetYOffset(false, square.Direction, square.SectionData.IntervalRight));
+                        }
+                    }
                 }
             }
             return bitmap;

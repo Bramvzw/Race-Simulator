@@ -8,7 +8,6 @@ namespace ControllerTest
     [TestFixture]
     public class Controller_Data_InitialisationTest
     {
-
         [SetUp]
         public void Setup()
         {
@@ -19,7 +18,7 @@ namespace ControllerTest
         public void Initialise_CompetitionSet()
         {
             Competition expected = new Competition();
-            Data.Initialise(expected);
+            Data.Initialize(expected);
             Competition result = Data.Competition;
             Assert.AreSame(expected, result);
         }
@@ -28,7 +27,7 @@ namespace ControllerTest
         public void Initialise_Competition_ParticipantsAdded()
         {
             Competition competition = new Competition();
-            Data.Initialise(competition);
+            Data.Initialize(competition);
             Assert.AreEqual(5, Data.Competition.Contestors.Count);
         }
 
@@ -36,7 +35,7 @@ namespace ControllerTest
         public void Initialise_Competition_TracksAdded()
         {
             Competition competition = new Competition();
-            Data.Initialise(competition);
+            Data.Initialize(competition);
             Assert.AreEqual(1, Data.Competition.Tracks.Count);
         }
     }

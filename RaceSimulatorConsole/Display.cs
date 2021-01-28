@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Controller;
 using Model;
+using static System.Console;
 
 namespace RaceSimulator
 {
@@ -57,12 +58,12 @@ namespace RaceSimulator
         // Draws track
         public static void DrawTrack(Track track)
         {
-            Console.SetCursorPosition(0, 0);
+            SetCursorPosition(0, 0);
             DetermineGrid(track.Sections);
             MoveGrid(Math.Abs(GridSquare.XCoordinate), Math.Abs(GridSquare.YCoordinate));
-            GridSquares = GridSquares.OrderBy(_square => _square.Y).ToList();
-            int maxX = GridSquares.Max(_square => _square.X);
-            int maxY = GridSquares.Max(_square => _square.Y);
+            GridSquares = GridSquares.OrderBy(gridSquare => gridSquare.Y).ToList();
+            int maxX = GridSquares.Max(gridSquare => gridSquare.X);
+            int maxY = GridSquares.Max(gridSquare => gridSquare.Y);
             for (int y = 0; y <= maxY; y++)
             {
                 for (int internalY = 0; internalY < 7; internalY++)
@@ -70,9 +71,9 @@ namespace RaceSimulator
                     for (int x = 0; x <= maxX; x++)
                     {
                         GridSquare square = GetGridSquare(x, y);
-                        Console.Write(square == null ? Empty[internalY] : InsertParticipants(square.Section[internalY], square.SectionData.Left, square.SectionData.Right));
+                        Write(square == null ? Empty[internalY] : InsertParticipants(square.Section[internalY], square.SectionData.Left, square.SectionData.Right));
                     }
-                    Console.WriteLine();
+                    WriteLine();
                 }
             }
             DrawScore();
@@ -86,19 +87,18 @@ namespace RaceSimulator
                 {
                     throw new ArgumentNullException(nameof(_square));
                 }
-
                 return _square.X;
             });
-            Console.SetCursorPosition((maxX + 5) * 4, 0);
-            var bestParticipant = Data.Competition.ContestorOvertaken.GetLeadingContestor();
-            Console.Write($"{bestParticipant} heeft het vaakst ingehaald");
+            SetCursorPosition((maxX + 5) * 4, 0);
+            string bestParticipant = Data.Competition.ContestorOvertaken.GetLeadingContestor();
+            Write($"{bestParticipant} heeft het vaakst ingehaald");
         }
 
         public static void OnRaceStarted(object sender, EventArgs e)
         {
             RaceStartedEventArgs track = (RaceStartedEventArgs)e;
             track.Race.DriversChanged += OnDriversChanged;
-            Console.Clear();
+            Clear();
             DrawTrack(track.Race.Track);
         }
 
@@ -109,13 +109,11 @@ namespace RaceSimulator
             if (leftParticipant != null && leftParticipant.Equipment.Broken)
             {
                 initial1 = '×';
-                Debug.WriteLine($"{leftParticipant.Name} is gechrasht");
 
             }
             if (rightParticipant != null && rightParticipant.Equipment.Broken)
             {
                 initial2 = '×';
-                Debug.WriteLine($"{leftParticipant.Name} is gechrasht");
             }
             string returnValue = track.Replace('.', initial1);
             returnValue = returnValue.Replace(',', initial2);
@@ -149,20 +147,20 @@ namespace RaceSimulator
                     // StartGrid
                     case SectionTypes.StartGrid:
                         if (direct == 1 || direct == 3)
-                            GridSquares.Add(new GridSquare(x, y, _startHorizontal, data));
+                            GridSquares?.Add(new GridSquare(x, y, _startHorizontal, data));
                         else
-                            GridSquares.Add(new GridSquare(x, y, _startVertical, data));
+                            GridSquares?.Add(new GridSquare(x, y, _startVertical, data));
                         break;
 
                     // Straight grid
                     case SectionTypes.Straight:
                         if (direct == 1 || direct == 3)
                         {
-                            GridSquares.Add(new GridSquare(x, y, _straightHorizontal, data));
+                            GridSquares?.Add(new GridSquare(x, y, _straightHorizontal, data));
                         }
                         else
                         {
-                            GridSquares.Add(new GridSquare(x, y, _straightVertical, data));
+                            GridSquares?.Add(new GridSquare(x, y, _straightVertical, data));
                         }
                         break;
 
@@ -170,11 +168,11 @@ namespace RaceSimulator
                     case SectionTypes.Finish:
                         if (direct == 1 || direct == 3)
                         {
-                            GridSquares.Add(new GridSquare(x, y, _finishHorizontal, data));
+                            GridSquares?.Add(new GridSquare(x, y, _finishHorizontal, data));
                         }
                         else
                         {
-                            GridSquares.Add(new GridSquare(x, y, _finishVertical, data));
+                            GridSquares?.Add(new GridSquare(x, y, _finishVertical, data));
                         }
                         break;
 
@@ -183,13 +181,13 @@ namespace RaceSimulator
                     // Leftcorners
                     case SectionTypes.LeftCorner:
                         if (direct == 1)
-                            GridSquares.Add(new GridSquare(x, y, _cornerNW, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerNW, data));
                         else if (direct == 2)
-                            GridSquares.Add(new GridSquare(x, y, _cornerNE, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerNE, data));
                         else if (direct == 3)
-                            GridSquares.Add(new GridSquare(x, y, _cornerSE, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerSE, data));
                         else
-                            GridSquares.Add(new GridSquare(x, y, _cornerSW, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerSW, data));
                         // Determines the next X,Y coördinates of a grid
                         direct = (direct - 1) % 4;
                         if (direct < 0)
@@ -199,13 +197,13 @@ namespace RaceSimulator
                     // RightCorners
                     case SectionTypes.RightCorner:
                         if (direct == 1)
-                            GridSquares.Add(new GridSquare(x, y, _cornerSW, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerSW, data));
                         else if (direct == 2)
-                            GridSquares.Add(new GridSquare(x, y, _cornerNW, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerNW, data));
                         else if (direct == 3)
-                            GridSquares.Add(new GridSquare(x, y, _cornerNE, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerNE, data));
                         else
-                            GridSquares.Add(new GridSquare(x, y, _cornerSE, data));
+                            GridSquares?.Add(new GridSquare(x, y, _cornerSE, data));
                         //Determines the next X, Y coördinates of a grid
                         direct = (direct + 1) % 4;
                         break;
@@ -230,8 +228,8 @@ namespace RaceSimulator
             }
         }
 
-            // Gives the coördinates to each grid
-            private static void MoveGrid(int x, int y)
+        // Gives the coördinates to each grid
+        private static void MoveGrid(int x, int y)
         {
             foreach (GridSquare square in GridSquares)
             {

@@ -9,7 +9,7 @@ namespace ControllerTest
 {
 
     [TestFixture]
-    public class Controller_Race_HelperMethods
+    public class Controller_Race_RaceData_Functions
     {
 
         private Race race;
@@ -20,8 +20,8 @@ namespace ControllerTest
         [SetUp]
         public void Setup()
         {
-            track = new Track("Baby park", new[] { SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner });
-            participants = new List<IParticipant>() { new Driver("Bob", new Car()), new Driver("Terry", new Car()) };
+            track = new Track("Phoenix Raceway", new[] { SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner });
+            participants = new List<IParticipant>() { new Driver("Byron", new Car()), new Driver("Harvick", new Car()) };
             race = new Race(track, participants);
             _competition = new Competition();
             Data.Competition = _competition;
@@ -135,7 +135,7 @@ namespace ControllerTest
         }
 
         [Test]
-        public void MoveParticipants_NoErros()
+        public void MoveParticipants()
         {
             race.ContestorData(DateTime.Now);
             Assert.Pass();

@@ -6,13 +6,13 @@ namespace ControllerTest
 {
 
     [TestFixture]
-    public class Controller_Data_NextRaceShould
+    public class Controller_Data_NextRace
     {
 
         [SetUp]
         public void Setup()
         {
-            //Data.Initialise(new Competition());
+           
         }
 
         [Test]

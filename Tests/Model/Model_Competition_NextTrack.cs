@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace ControllerTest
 {
     [TestFixture]
-    public class Model_Competition_NextTrackShould
+    public class Model_Competition_NextTrack
     {
         private Competition _competition;
 
